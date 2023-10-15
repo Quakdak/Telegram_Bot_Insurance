@@ -3,7 +3,8 @@ from aiogram import Bot, Dispatcher
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
-API_TOKEN=config["API_TOKEN"]
+API_TOKEN = config["API_TOKEN"]
+PASSWORD = config["PASSWORD"]
 
 logging.basicConfig(level=logging.INFO)
 
