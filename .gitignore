@@ -2,3 +2,4 @@
 /.idea
 .gitignore
 .env
+__pycache__
