@@ -1,4 +1,6 @@
 from aiogram import types
+from aiogram.filters import CommandObject
+
 from config.bot_config import dp
 from ADMINS import ADMIN
 

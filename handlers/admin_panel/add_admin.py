@@ -1,7 +1,7 @@
 from aiogram import types
-from config.bot_config import dp
+from aiogram.filters import CommandObject
+
 from ADMINS import ADMIN
-from config.bot_config import PASSWORD
 
 
 async def add_admin(message: types.Message):
@@ -9,7 +9,7 @@ async def add_admin(message: types.Message):
     ADMIN.add(user_id)
     kb = [
         [types.KeyboardButton(text="Активные заявки")],
-        [types.KeyboardButton(text="Вернутьсяя в режим пользователя")]
+        [types.KeyboardButton(text="Вернуться в режим пользователя")]
     ]
     keyboard = types.ReplyKeyboardMarkup(
         keyboard=kb,

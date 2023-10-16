@@ -1,9 +1,10 @@
 import os
-
+from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 
-API_TOKEN = os.getenv('token')
-PASSWORD = os.getenv('password')
+load_dotenv()
+API_TOKEN = os.getenv('API_TOKEN')
+PASSWORD = os.getenv('PASSWORD')
 
-bot = Bot(token=os.getenv('token'))
+bot = Bot(token=API_TOKEN)
 dp = Dispatcher()

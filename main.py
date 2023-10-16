@@ -1,5 +1,4 @@
 import asyncio
-from aiogram import types
 
 from config.bot_config import dp, bot
 from handlers import register_user_commands
