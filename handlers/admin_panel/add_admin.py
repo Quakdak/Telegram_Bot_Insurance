@@ -1,6 +1,6 @@
 from aiogram import types
 from config.bot_config import dp
-from ADMINS import ADMIN
+from data.ADMINS import ADMIN
 from config.bot_config import PASSWORD
 
 @dp.message(PASSWORD)

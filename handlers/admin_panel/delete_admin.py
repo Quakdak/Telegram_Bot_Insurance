@@ -1,6 +1,6 @@
 from aiogram import types
 from config.bot_config import dp
-from ADMINS import ADMIN
+from data.ADMINS import ADMIN
 
 @dp.message("Вернутьсяя в режим пользователя")
 async def delete_admin(message: types.Message):
@@ -8,7 +8,8 @@ async def delete_admin(message: types.Message):
     ADMIN.remove(user_id)
     kb = [
         [types.KeyboardButton(text="Подать заявку")],
-        [types.KeyboardButton(text="Статус заявки")]
+        [types.KeyboardButton(text="Статус заявки")],
+        [types.KeyboardButton(text="История заявок")]
     ]
     keyboard = types.ReplyKeyboardMarkup(
         keyboard=kb,

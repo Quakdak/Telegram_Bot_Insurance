@@ -6,7 +6,8 @@ async def start(message: types.Message):
     user_name = message.from_user.first_name
     kb = [
         [types.KeyboardButton(text="Подать заявку")],
-        [types.KeyboardButton(text="Статус заявки")]
+        [types.KeyboardButton(text="Статус заявки")],
+        [types.KeyboardButton(text="История заявок")]
     ]
     keyboard = types.ReplyKeyboardMarkup(
         keyboard=kb,
