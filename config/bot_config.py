@@ -1,12 +1,9 @@
-import logging
+import os
+
 from aiogram import Bot, Dispatcher
-from dotenv import dotenv_values
 
-config = dotenv_values(".env")
-API_TOKEN = config["API_TOKEN"]
-PASSWORD = config["PASSWORD"]
+API_TOKEN = os.getenv('token')
+PASSWORD = os.getenv('password')
 
-logging.basicConfig(level=logging.INFO)
-
-bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
+bot = Bot(token=os.getenv('token'))
+dp = Dispatcher()
