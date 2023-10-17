@@ -1,16 +1,44 @@
-from aiogram import types
-from aiogram.filters import CommandObject
+import os
 
-from config.bot_config import dp
+from aiogram.types import Message
+from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton, InlineKeyboardBuilder
+from dotenv import load_dotenv
 
 
-async def start(message: types.Message):
+async def start(message: Message):
     user_name = message.from_user.first_name
-    kb = [
-        [types.KeyboardButton(text="Подать заявку")],
-        [types.KeyboardButton(text="Статус заявки")]
-    ]
-    keyboard = types.ReplyKeyboardMarkup(
-        keyboard=kb,
-        resize_keyboard=True)
-    await message.answer(f"Привет, {user_name}! Я твой помощник по страхованию Страх-cтрахыч", reply_markup=keyboard)
+    user_id = message.from_user.id
+    load_dotenv()
+    admin_ids = map(int, os.getenv('ADMIN_IDS').split())
+
+    button_1 = InlineKeyboardButton(
+        text='Подать заявку',
+        callback_data='apply_request'
+    )
+
+    button_2 = InlineKeyboardButton(
+        text='Активные заявки',
+        callback_data='avtive_requests'
+    )
+
+    button_3 = InlineKeyboardButton(
+        text='Принятые заявки',
+        callback_data='applied_history'
+    )
+
+    inline_kb = [[button_1], [button_2], [button_3]]
+
+    if user_id in admin_ids:
+        button4 = InlineKeyboardButton(
+            text='Админ панель',
+            callback_data='Admin'
+        )
+        inline_kb.append([button4])
+
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=inline_kb
+    )
+
+    await message.answer(f"Привет, {user_name}! Я твой помощник по страхованию Страх-cтрахыч",
+                         reply_markup=keyboard)
+
