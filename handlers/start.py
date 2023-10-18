@@ -1,9 +1,9 @@
 import os
 
 from aiogram.types import Message
-from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton, InlineKeyboardBuilder
+from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from dotenv import load_dotenv
-
+from lexicon.lexicon_ru import lexicon
 
 async def start(message: Message):
     user_name = message.from_user.first_name
@@ -39,6 +39,6 @@ async def start(message: Message):
         inline_keyboard=inline_kb
     )
 
-    await message.answer(f"Привет, {user_name}! Я твой помощник по страхованию Страх-cтрахыч",
+    await message.answer(lexicon["start"].format(user_name),
                          reply_markup=keyboard)
 
