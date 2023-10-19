@@ -44,4 +44,4 @@ async def start_inspection_transport(callback: CallbackQuery):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
-    await callback.message.answer(text=lexicon['start_inspection'],reply_markup=keyboard)
+    await callback.message.edit_text(text=lexicon['start_inspection'],reply_markup=keyboard)

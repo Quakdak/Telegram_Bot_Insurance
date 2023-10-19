@@ -16,4 +16,4 @@ async def apply_request(callback: CallbackQuery):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
-    await callback.message.answer(text=lexicon['apply_request'], reply_markup=keyboard)
+    await callback.message.edit_text(text=lexicon['apply_request'], reply_markup=keyboard)

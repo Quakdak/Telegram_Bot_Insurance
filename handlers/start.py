@@ -5,6 +5,7 @@ from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from dotenv import load_dotenv
 from lexicon.lexicon_ru import lexicon
 
+
 async def start(message: Message):
     user_name = message.from_user.first_name
     user_id = message.from_user.id
@@ -41,4 +42,3 @@ async def start(message: Message):
 
     await message.answer(lexicon["start"].format(user_name),
                          reply_markup=keyboard)
-
