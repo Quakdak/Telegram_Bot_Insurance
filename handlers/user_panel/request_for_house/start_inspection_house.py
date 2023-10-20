@@ -4,6 +4,10 @@ from lexicon.lexicon_ru import lexicon
 
 
 async def start_inspection_house(callback: CallbackQuery):
+    button_0 = InlineKeyboardButton(
+        text='Назад',
+        callback_data='back'
+    )
     button_1 = InlineKeyboardButton(
         text='Фото общего вида участка',
         callback_data='general_view_house'
@@ -56,8 +60,12 @@ async def start_inspection_house(callback: CallbackQuery):
         text='Фото забора',
         callback_data="fence"
     )
-    inline_kb = [[button_1], [button_2], [button_3], [button_4], [button_5], [button_6], [button_7], [button_8],
-                 [button_9], [button_10], [button_11], [button_12], [button_13]]
+    button_14 = InlineKeyboardButton(
+        text='Закончить осмотр',
+        callback_data='end_inspection_house'
+    )
+    inline_kb = [[button_0], [button_1], [button_2], [button_3], [button_4], [button_5], [button_6], [button_7],
+                 [button_8], [button_9], [button_10], [button_11], [button_12], [button_13], [button_14]]
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
