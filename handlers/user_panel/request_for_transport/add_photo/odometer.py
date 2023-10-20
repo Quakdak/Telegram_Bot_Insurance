@@ -43,5 +43,6 @@ async def got_odometer(callback: CallbackQuery, state: FSMContext):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=data['current_keyboard']
     )
+    await state.update_data(current_keyboard=data['current_keyboard'])
     await callback.message.edit_text(text=lexicon['got_photo'], reply_markup=keyboard)
     await state.set_state(state=None)

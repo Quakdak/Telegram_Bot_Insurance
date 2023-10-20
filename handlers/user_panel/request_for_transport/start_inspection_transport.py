@@ -5,10 +5,6 @@ from lexicon.lexicon_ru import lexicon
 
 
 async def start_inspection_transport(callback: CallbackQuery, state: FSMContext):
-    button_0 = InlineKeyboardButton(
-        text='Назад',
-        callback_data='back'
-    )
     button_1 = InlineKeyboardButton(
         text='Фото VIN-номера на металле',
         callback_data='vin_number'
@@ -49,7 +45,7 @@ async def start_inspection_transport(callback: CallbackQuery, state: FSMContext)
         text='Закончить осмотр',
         callback_data='end_inspection_transport'
     )
-    inline_kb = [[button_0], [button_1], [button_2], [button_3], [button_4], [button_5], [button_6], [button_7],
+    inline_kb = [[button_1], [button_2], [button_3], [button_4], [button_5], [button_6], [button_7],
                  [button_8], [button_9], [button_10]]
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
