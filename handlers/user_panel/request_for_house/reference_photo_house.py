@@ -12,4 +12,4 @@ async def reference_photo_house(callback: CallbackQuery):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
-    await callback.message.edit_text(text=lexicon['reference_photo_house'], reply_markup=keyboard)
+    await callback.message.edit_text(text=lexicon['reference_photo_house'],reply_markup=keyboard)
