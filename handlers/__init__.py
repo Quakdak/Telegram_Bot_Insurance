@@ -5,6 +5,7 @@ from aiogram.filters import CommandStart
 from handlers.user_panel.state_request.state_request_transport import request_transport
 
 from handlers.start import start
+from handlers.done import done
 from handlers.user_panel.apply_request import apply_request
 from handlers.user_panel.request_for_transport.request_for_transport import request_for_transport
 from handlers.user_panel.request_for_transport.start_inspection_transport import start_inspection_transport
@@ -89,3 +90,4 @@ def register_user_commands(router: Router):
     router.callback_query.register(got_key, F.data == 'end_add_key')
 
     router.callback_query.register(end_inspection_transport, F.data == 'end_inspection_transport')
+    router.callback_query.register(done, F.data == 'done')
