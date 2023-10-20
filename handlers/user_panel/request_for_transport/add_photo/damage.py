@@ -28,7 +28,7 @@ async def getting_damage(message: Message, state: FSMContext):
     )
     await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
 
-async def got_damage(message: Message, state: FSMContext):
+async def got_damage(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     button = InlineKeyboardButton(
         text='✅Фото всех повреждений',
@@ -41,5 +41,5 @@ async def got_damage(message: Message, state: FSMContext):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=data['current_keyboard']
     )
-    await message.answer(text=lexicon['got_photo'], reply_markup=keyboard)
+    await callback.message.edit_text(text=lexicon['got_photo'], reply_markup=keyboard)
     await state.set_state(state=None)

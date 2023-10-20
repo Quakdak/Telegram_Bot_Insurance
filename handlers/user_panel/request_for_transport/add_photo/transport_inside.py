@@ -30,7 +30,7 @@ async def getting_transport_inside(message: Message, state: FSMContext):
     await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
 
 
-async def got_transport_inside(message: Message, state: FSMContext):
+async def got_transport_inside(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
 
     button = InlineKeyboardButton(
@@ -44,5 +44,5 @@ async def got_transport_inside(message: Message, state: FSMContext):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=data['current_keyboard']
     )
-    await message.answer(text=lexicon['got_photo'], reply_markup=keyboard)
+    await callback.message.edit_text(text=lexicon['got_photo'], reply_markup=keyboard)
     await state.set_state(state=None)
