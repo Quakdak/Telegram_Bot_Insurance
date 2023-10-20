@@ -1,9 +1,10 @@
 from aiogram.types import CallbackQuery
+from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from lexicon.lexicon_ru import lexicon
 
 
-async def start_inspection_house(callback: CallbackQuery):
+async def start_inspection_house(callback: CallbackQuery, state: FSMContext):
     button_1 = InlineKeyboardButton(
         text='Фото общего вида участка',
         callback_data='general_view_house'
@@ -65,4 +66,5 @@ async def start_inspection_house(callback: CallbackQuery):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
+    await state.update_data(current_keyboard=inline_kb)
     await callback.message.edit_text(text=lexicon['start_inspection'], reply_markup=keyboard)

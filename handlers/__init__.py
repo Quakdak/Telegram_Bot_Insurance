@@ -14,35 +14,49 @@ from handlers.user_panel.request_for_house.request_for_house import request_for_
 from handlers.user_panel.request_for_house.start_inspection_house import start_inspection_house
 from handlers.user_panel.request_for_house.reference_photo_house import reference_photo_house
 
-from handlers.user_panel.request_for_transport.add_photo.vin_number import vin_number, got_vin_number, \
-    getting_vin_number
-from handlers.user_panel.request_for_transport.add_photo.transport_outside import transport_outside, \
-    got_transport_outside, getting_transport_outside
-from handlers.user_panel.request_for_transport.add_photo.windshield import windshield, got_windshield, \
-    getting_windshield
-from handlers.user_panel.request_for_transport.add_photo.mark_windshield import mark_windshield, got_mark_windshield, \
-    getting_mark_windshield
-from handlers.user_panel.request_for_transport.add_photo.wheel import wheel, got_wheel, getting_wheel
-from handlers.user_panel.request_for_transport.add_photo.odometer import odometer, got_odometer, getting_odometer
-from handlers.user_panel.request_for_transport.add_photo.transport_inside import transport_inside, got_transport_inside, \
-    getting_transport_inside
-from handlers.user_panel.request_for_transport.add_photo.damage import damage, got_damage, getting_damage
-from handlers.user_panel.request_for_transport.add_photo.key import key, got_key, getting_key
+from handlers.user_panel.request_for_transport.add_photo.vin_number import *
+from handlers.user_panel.request_for_transport.add_photo.transport_outside import *
+from handlers.user_panel.request_for_transport.add_photo.windshield import *
+from handlers.user_panel.request_for_transport.add_photo.mark_windshield import *
+from handlers.user_panel.request_for_transport.add_photo.wheel import *
+from handlers.user_panel.request_for_transport.add_photo.odometer import *
+from handlers.user_panel.request_for_transport.add_photo.transport_inside import *
+from handlers.user_panel.request_for_transport.add_photo.damage import *
+from handlers.user_panel.request_for_transport.add_photo.key import *
 
 from handlers.user_panel.request_for_transport.end_inspection_transport import end_inspection_transport
+
+from handlers.user_panel.request_for_house.add_photo.general_view_house import *
+from handlers.user_panel.request_for_house.add_photo.outside_engineering import *
+from handlers.user_panel.request_for_house.add_photo.facades_buildings import *
+from handlers.user_panel.request_for_house.add_photo.mechanical_protection import *
+from handlers.user_panel.request_for_house.add_photo.front_door import *
+from handlers.user_panel.request_for_house.add_photo.inside_engineering import *
+from handlers.user_panel.request_for_house.add_photo.fire_alarm_system import *
+from handlers.user_panel.request_for_house.add_photo.security_alarm_system import *
+from handlers.user_panel.request_for_house.add_photo.interior import *
+from handlers.user_panel.request_for_house.add_photo.window import *
+from handlers.user_panel.request_for_house.add_photo.defect import *
+from handlers.user_panel.request_for_house.add_photo.household_property import *
+from handlers.user_panel.request_for_house.add_photo.fence import *
+
+from handlers.user_panel.request_for_house.end_inspection_house import end_inspection_house
 
 
 def register_user_commands(router: Router):
     router.message.register(start, CommandStart())
     router.callback_query.register(apply_request, F.data == 'apply_request')
+    router.callback_query.register(done, F.data == 'done')
 
     router.callback_query.register(request_for_transport, F.data == 'request_for_transport')
     router.callback_query.register(start_inspection_transport, F.data == 'start_inspection_transport')
     router.callback_query.register(reference_photo_transport, F.data == 'reference_photo_transport')
+    router.callback_query.register(end_inspection_transport, F.data == 'end_inspection_transport')
 
     router.callback_query.register(request_for_house, F.data == 'request_for_house')
     router.callback_query.register(start_inspection_house, F.data == 'start_inspection_house')
     router.callback_query.register(reference_photo_house, F.data == 'reference_photo_house')
+    router.callback_query.register(end_inspection_house, F.data == 'end_inspection_house')
 
     router.callback_query.register(vin_number, F.data == 'vin_number')
     router.callback_query.register(vin_number, F.data == 'add_more_vin_number')
@@ -89,5 +103,72 @@ def register_user_commands(router: Router):
     router.message.register(getting_key, F.photo, request_transport.wait_key)
     router.callback_query.register(got_key, F.data == 'end_add_key')
 
-    router.callback_query.register(end_inspection_transport, F.data == 'end_inspection_transport')
-    router.callback_query.register(done, F.data == 'done')
+    router.callback_query.register(general_view_house, F.data == 'general_view_house')
+    router.callback_query.register(general_view_house, F.data == 'general_view_house')
+    router.message.register(getting_general_view_house, F.photo, request_house.wait_general_view_house)
+    router.callback_query.register(got_general_view_house, F.data == 'end_add_general_view_house')
+
+    router.callback_query.register(outside_engineering, F.data == 'outside_engineering')
+    router.callback_query.register(outside_engineering, F.data == 'add_more_outside_engineering')
+    router.message.register(getting_outside_engineering, F.photo, request_house.wait_outside_engineering)
+    router.callback_query.register(got_outside_engineering, F.data == 'end_add_outside_engineering')
+
+    router.callback_query.register(facades_buildings, F.data == 'facades_buildings')
+    router.callback_query.register(facades_buildings, F.data == 'add_more_facades_buildings')
+    router.message.register(getting_facades_buildings, F.photo, request_house.wait_facades_buildings)
+    router.callback_query.register(got_facades_buildings, F.data == 'end_add_facades_buildings')
+
+    router.callback_query.register(mechanical_protection, F.data == 'mechanical_protection')
+    router.callback_query.register(mechanical_protection, F.data == 'add_more_mechanical_protection')
+    router.message.register(getting_mechanical_protection, F.photo, request_house.wait_mechanical_protection)
+    router.callback_query.register(got_mechanical_protection, F.data == 'end_add_mechanical_protection')
+
+    router.callback_query.register(front_door, F.data == 'front_door')
+    router.callback_query.register(front_door, F.data == 'add_more_front_door')
+    router.message.register(getting_front_door, F.photo, request_house.wait_front_door)
+    router.callback_query.register(got_front_door, F.data == 'end_add_front_door')
+
+    router.callback_query.register(inside_engineering, F.data == 'inside_engineering')
+    router.callback_query.register(inside_engineering, F.data == 'add_more_inside_engineering')
+    router.message.register(getting_inside_engineering, F.photo, request_house.wait_inside_engineering)
+    router.callback_query.register(got_inside_engineering, F.data == 'end_add_inside_engineering')
+
+    router.callback_query.register(fire_alarm_system, F.data == 'fire_alarm_system')
+    router.callback_query.register(fire_alarm_system, F.data == 'fire_alarm_system')
+    router.message.register(getting_fire_alarm_system, F.photo, request_house.wait_fire_alarm_system)
+    router.callback_query.register(got_fire_alarm_system, F.data == 'end_add_fire_alarm_system')
+
+    router.callback_query.register(security_alarm_system, F.data == 'security_alarm_system')
+    router.callback_query.register(security_alarm_system, F.data == 'add_more_security_alarm_system')
+    router.message.register(getting_security_alarm_system, F.photo, request_house.wait_security_alarm_system)
+    router.callback_query.register(got_security_alarm_system, F.data == 'end_add_security_alarm_system')
+
+    router.callback_query.register(key, F.data == 'key')
+    router.callback_query.register(key, F.data == 'add_more_key')
+    router.message.register(getting_key, F.photo, request_transport.wait_key)
+    router.callback_query.register(got_key, F.data == 'end_add_key')
+
+    router.callback_query.register(interior, F.data == 'interior')
+    router.callback_query.register(interior, F.data == 'add_more_interior')
+    router.message.register(getting_interior, F.photo, request_house.wait_interior)
+    router.callback_query.register(got_interior, F.data == 'end_add_interior')
+
+    router.callback_query.register(window, F.data == 'window')
+    router.callback_query.register(window, F.data == 'add_more_window')
+    router.message.register(getting_window, F.photo, request_house.wait_window)
+    router.callback_query.register(got_window, F.data == 'end_add_window')
+
+    router.callback_query.register(defect, F.data == 'defect')
+    router.callback_query.register(defect, F.data == 'add_more_defect')
+    router.message.register(getting_defect, F.photo, request_house.wait_defect)
+    router.callback_query.register(got_defect, F.data == 'end_add_defect')
+
+    router.callback_query.register(household_property, F.data == 'household_property')
+    router.callback_query.register(household_property, F.data == 'add_more_household_property')
+    router.message.register(getting_household_property, F.photo, request_house.wait_household_property)
+    router.callback_query.register(got_household_property, F.data == 'end_add_household_property')
+
+    router.callback_query.register(fence, F.data == 'fence')
+    router.callback_query.register(fence, F.data == 'add_more_fence')
+    router.message.register(getting_fence, F.photo, request_house.wait_fence)
+    router.callback_query.register(got_fence, F.data == 'end_add_fence')

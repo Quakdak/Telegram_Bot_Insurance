@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 from lexicon.lexicon_ru import lexicon
 
 
-async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
+async def end_inspection_house(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     load_dotenv()
     user_id = callback.message.from_user.id
@@ -34,9 +34,10 @@ async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
-    if 'windshield' in data and 'key' in data and 'mark_windshield' in data and 'odometer' in data \
-            and 'transport_inside' in data and 'transport_outside' in data and 'vin_number' in data \
-            and 'wheel' in data:
+    if 'general_view_house' in data and 'outside_engineering' in data and 'facades_buildings' in data \
+            and 'mechanical_protection' in data and 'front_door' in data and 'inside_engineering' in data \
+            and 'fire_alarm_system' in data and 'security_alarm_system' in data and 'interior' in data\
+            and 'fence' in data and 'household_property' in data:
         await callback.message.edit_text(text=lexicon['end_inspection'], reply_markup=keyboard)
         await state.clear()
     elif len(data) < 2:
