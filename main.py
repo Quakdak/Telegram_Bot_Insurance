@@ -26,6 +26,7 @@ async def main():
         commands_for_bot.append(BotCommand(command=cmd[0], description=cmd[1]))
     await bot.set_my_commands(commands=commands_for_bot)
     register_user_commands(dp)
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 

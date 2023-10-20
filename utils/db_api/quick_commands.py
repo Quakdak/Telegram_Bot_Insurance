@@ -3,6 +3,8 @@ from asyncpg import UniqueViolationError
 from utils.db_api.db_gino import db
 
 from utils.db_api.schemas.user import User
+from utils.db_api.schemas.vehicle_request import VehicleRequest
+from utils.db_api.schemas.house_request import HouseRequest
 
 
 async def add_user(user_id: int, first_name: str, last_name: str, is_admin: bool):
@@ -28,8 +30,27 @@ async def select_user(user_id):
     return user
 
 
-async def update_user_name(user_id, new_name):
-    user = await select_user(user_id)
-    await user.update(update_name=new_name).apply()
+async def add_vehicle_request(user_id: int, data: list):
+    try:
+        vehicle_request = VehicleRequest(user_id=user_id, data=data)
+        await vehicle_request.create()
+    except UniqueViolationError:
+        print('Заявка на транспорт не добавлена')
 
 
+async def add_house_request(user_id: int, data: list):
+    try:
+        house_request = HouseRequest(user_id=user_id, data=data)
+        await house_request.create()
+    except UniqueViolationError:
+        print('Заявка на дом не добавлена')
+
+
+async def select_all_house_requests():
+    house_requests = await HouseRequest.query.gino.all()
+    return house_requests
+
+
+async def select_all_vehicle_requests():
+    vehicle_requests = await VehicleRequest.query.gino.all()
+    return vehicle_requests
