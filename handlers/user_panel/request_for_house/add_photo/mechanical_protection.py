@@ -6,7 +6,7 @@ from lexicon.lexicon_ru import lexicon
 
 async def mechanical_protection(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=lexicon['mechanical_protection'])
-    await state.set_state(request_house.wait_defect)
+    await state.set_state(request_house.wait_mechanical_protection)
 
 
 async def getting_mechanical_protection(message: Message, state: FSMContext):

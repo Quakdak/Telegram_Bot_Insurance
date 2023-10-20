@@ -6,7 +6,7 @@ from lexicon.lexicon_ru import lexicon
 
 async def facades_buildings(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=lexicon['facades_buildings'])
-    await state.set_state(request_house.wait_defect)
+    await state.set_state(request_house.wait_facades_buildings)
 
 
 async def getting_facades_buildings(message: Message, state: FSMContext):

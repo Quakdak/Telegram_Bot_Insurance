@@ -6,7 +6,7 @@ from lexicon.lexicon_ru import lexicon
 
 async def household_property(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=lexicon['household_property'])
-    await state.set_state(request_house.wait_defect)
+    await state.set_state(request_house.wait_household_property)
 
 
 async def getting_household_property(message: Message, state: FSMContext):

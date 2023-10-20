@@ -6,7 +6,7 @@ from lexicon.lexicon_ru import lexicon
 
 async def outside_engineering(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=lexicon['outside_engineering'])
-    await state.set_state(request_house.wait_defect)
+    await state.set_state(request_house.wait_outside_engineering)
 
 
 async def getting_outside_engineering(message: Message, state: FSMContext):

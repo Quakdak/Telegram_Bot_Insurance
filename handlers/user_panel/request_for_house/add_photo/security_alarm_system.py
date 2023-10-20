@@ -6,7 +6,7 @@ from lexicon.lexicon_ru import lexicon
 
 async def security_alarm_system(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=lexicon['security_alarm_system'])
-    await state.set_state(request_house.wait_defect)
+    await state.set_state(request_house.wait_security_alarm_system)
 
 
 async def getting_security_alarm_system(message: Message, state: FSMContext):

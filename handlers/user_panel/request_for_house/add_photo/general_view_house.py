@@ -6,7 +6,7 @@ from lexicon.lexicon_ru import lexicon
 
 async def general_view_house(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=lexicon['general_view_house'])
-    await state.set_state(request_house.wait_defect)
+    await state.set_state(request_house.wait_general_view_house)
 
 
 async def getting_general_view_house(message: Message, state: FSMContext):

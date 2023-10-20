@@ -6,7 +6,7 @@ from lexicon.lexicon_ru import lexicon
 
 async def front_door(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=lexicon['front_door'])
-    await state.set_state(request_house.wait_defect)
+    await state.set_state(request_house.wait_front_door)
 
 
 async def getting_front_door(message: Message, state: FSMContext):
