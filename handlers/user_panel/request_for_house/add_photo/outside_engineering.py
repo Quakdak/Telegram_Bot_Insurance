@@ -2,6 +2,7 @@ from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKe
 from aiogram.fsm.context import FSMContext
 from handlers.user_panel.state_request.state_request_house import request_house
 from lexicon.lexicon_ru import lexicon
+from utils.check_photo import check_photo
 from utils.get_photo import get_photo
 
 
@@ -14,23 +15,30 @@ async def getting_outside_engineering(message: Message, state: FSMContext):
     data = await state.get_data()
     photo_id = message.photo[-1].file_id
     file_url = await get_photo(photo_id)
-    if 'outside_engineering' in data:
-        data['outside_engineering'].append(message.photo[-1].file_id)
+    check_result = await check_photo(file_url)
+    if check_result is True:
+        if 'outside_engineering' in data:
+            data['outside_engineering'].append(message.photo[-1].file_id)
+        else:
+            data['outside_engineering'] = [message.photo[-1].file_id]
+        button_1 = InlineKeyboardButton(
+            text='Добавить еще',
+            callback_data="add_more_outside_engineering"
+        )
+        button_2 = InlineKeyboardButton(
+            text='Закончить',
+            callback_data='end_add_outside_engineering'
+        )
+        kb = [[button_1], [button_2]]
+        keyboard = InlineKeyboardMarkup(
+            inline_keyboard=kb
+        )
+        await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
     else:
-        data['outside_engineering'] = [message.photo[-1].file_id]
-    button_1 = InlineKeyboardButton(
-        text='Добавить еще',
-        callback_data="add_more_outside_engineering"
-    )
-    button_2 = InlineKeyboardButton(
-        text='Закончить',
-        callback_data='end_add_outside_engineering'
-    )
-    kb = [[button_1], [button_2]]
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=kb
-    )
-    await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
+        button = InlineKeyboardButton(text='Отправить еще раз', callback_data="add_more_outside_engineering")
+        kb = [[button]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=kb)
+        await message.answer(text=check_result, reply_markup=keyboard)
 
 
 async def got_outside_engineering(callback: CallbackQuery, state: FSMContext):

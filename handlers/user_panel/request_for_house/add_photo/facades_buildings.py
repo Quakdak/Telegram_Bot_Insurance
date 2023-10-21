@@ -2,6 +2,7 @@ from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKe
 from aiogram.fsm.context import FSMContext
 from handlers.user_panel.state_request.state_request_house import request_house
 from lexicon.lexicon_ru import lexicon
+from utils.check_photo import check_photo
 from utils.get_photo import get_photo
 
 
@@ -14,23 +15,30 @@ async def getting_facades_buildings(message: Message, state: FSMContext):
     data = await state.get_data()
     photo_id = message.photo[-1].file_id
     file_url = await get_photo(photo_id)
-    if 'facades_buildings' in data:
-        data['facades_buildings'].append(message.photo[-1].file_id)
+    check_result = await check_photo(file_url)
+    if check_result is True:
+        if 'facades_buildings' in data:
+            data['facades_buildings'].append(message.photo[-1].file_id)
+        else:
+            data['facades_buildings'] = [message.photo[-1].file_id]
+        button_1 = InlineKeyboardButton(
+            text='Добавить еще',
+            callback_data="add_more_facades_buildings"
+        )
+        button_2 = InlineKeyboardButton(
+            text='Закончить',
+            callback_data='end_add_facades_buildings'
+        )
+        kb = [[button_1], [button_2]]
+        keyboard = InlineKeyboardMarkup(
+            inline_keyboard=kb
+        )
+        await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
     else:
-        data['facades_buildings'] = [message.photo[-1].file_id]
-    button_1 = InlineKeyboardButton(
-        text='Добавить еще',
-        callback_data="add_more_facades_buildings"
-    )
-    button_2 = InlineKeyboardButton(
-        text='Закончить',
-        callback_data='end_add_facades_buildings'
-    )
-    kb = [[button_1], [button_2]]
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=kb
-    )
-    await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
+        button = InlineKeyboardButton(text='Отправить еще раз', callback_data="add_more_facades_buildings")
+        kb = [[button]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=kb)
+        await message.answer(text=check_result, reply_markup=keyboard)
 
 
 async def got_facades_buildings(callback: CallbackQuery, state: FSMContext):
