@@ -19,8 +19,7 @@ async def getting_defect(message: Message, state: FSMContext):
     photo_id = message.photo[-1].file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
-    if check_result:
-
+    if check_result is True:
         if 'defect' in data:
             data['defect'].append(photo_id)
         else:
