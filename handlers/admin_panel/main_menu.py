@@ -7,10 +7,10 @@ from dotenv import load_dotenv
 from lexicon.lexicon_ru import lexicon
 
 
-async def start(message: Message, state: FSMContext):
+async def main_menu(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    user_name = message.from_user.first_name
-    user_id = message.from_user.id
+    user_id = callback.message.from_user.id
+    user_name = callback.message.from_user.first_name
     load_dotenv()
     admin_ids = map(int, os.getenv('ADMIN_IDS').split())
 
@@ -27,15 +27,13 @@ async def start(message: Message, state: FSMContext):
         callback_data='applied_history'
     )
     inline_kb = [[button_1], [button_2], [button_3]]
-    if user_id in admin_ids:
-        button4 = InlineKeyboardButton(
-            text='Админ панель',
-            callback_data='admin'
-        )
-        inline_kb.append([button4])
+    button4 = InlineKeyboardButton(
+        text='Админ панель',
+        callback_data='admin'
+     )
+    inline_kb.append([button4])
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
 
-    await message.answer(lexicon["start"].format(user_name),
-                         reply_markup=keyboard)
+    await callback.message.edit_text(text=lexicon["start"].format(user_name), reply_markup=keyboard)

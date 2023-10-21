@@ -2,6 +2,9 @@ __all__ = ['start', 'register_user_commands']
 
 from aiogram import Router, F
 from aiogram.filters import CommandStart
+
+from handlers.admin_panel.main_menu import main_menu
+from handlers.admin_panel.admin_panel import admin
 from handlers.user_panel.state_request.state_request_transport import request_transport
 
 from handlers.start import start
@@ -47,6 +50,8 @@ def register_user_commands(router: Router):
     router.message.register(start, CommandStart())
     router.callback_query.register(apply_request, F.data == 'apply_request')
     router.callback_query.register(done, F.data == 'done')
+    router.callback_query.register(admin, F.data == 'admin')
+    router.callback_query.register(main_menu, F.data == 'main_menu')
 
     router.callback_query.register(request_for_transport, F.data == 'request_for_transport')
     router.callback_query.register(start_inspection_transport, F.data == 'start_inspection_transport')
