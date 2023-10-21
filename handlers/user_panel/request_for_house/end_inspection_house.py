@@ -1,16 +1,14 @@
-import os
-from dotenv import load_dotenv
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
 from lexicon.lexicon_ru import lexicon
+import utils.db_api.quick_commands as commands
 
 
 async def end_inspection_house(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    load_dotenv()
     user_id = callback.message.from_user.id
-    admin_ids = map(int, os.getenv('ADMIN_IDS').split())
+    user = await commands.select_user(user_id)
 
     button_1 = InlineKeyboardButton(
         text='Подать заявку',
@@ -25,7 +23,7 @@ async def end_inspection_house(callback: CallbackQuery, state: FSMContext):
         callback_data='applied_history'
     )
     inline_kb = [[button_1], [button_2], [button_3]]
-    if user_id in admin_ids:
+    if user.is_admin:
         button4 = InlineKeyboardButton(
             text='Админ панель',
             callback_data='Admin'
@@ -36,8 +34,10 @@ async def end_inspection_house(callback: CallbackQuery, state: FSMContext):
     )
     if 'general_view_house' in data and 'outside_engineering' in data and 'facades_buildings' in data \
             and 'mechanical_protection' in data and 'front_door' in data and 'inside_engineering' in data \
-            and 'fire_alarm_system' in data and 'security_alarm_system' in data and 'interior' in data\
+            and 'fire_alarm_system' in data and 'security_alarm_system' in data and 'interior' in data \
             and 'fence' in data and 'household_property' in data:
+        del data['current_keyboard']
+        await commands.add_house_request(user_id, list(data.values()))
         await callback.message.edit_text(text=lexicon['end_inspection'], reply_markup=keyboard)
         await state.clear()
     elif len(data) < 2:
