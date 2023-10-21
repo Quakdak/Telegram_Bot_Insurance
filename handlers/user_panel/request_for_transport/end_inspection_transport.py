@@ -4,13 +4,13 @@ from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
 from lexicon.lexicon_ru import lexicon
+import utils.db_api.quick_commands as commands
 
 
 async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    load_dotenv()
     user_id = callback.message.from_user.id
-    admin_ids = map(int, os.getenv('ADMIN_IDS').split())
+    user = await commands.select_user(user_id)
 
     button_1 = InlineKeyboardButton(
         text='Подать заявку',
@@ -25,7 +25,7 @@ async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
         callback_data='applied_history'
     )
     inline_kb = [[button_1], [button_2], [button_3]]
-    if user_id in admin_ids:
+    if user.is_admin:
         button4 = InlineKeyboardButton(
             text='Админ панель',
             callback_data='Admin'
@@ -37,6 +37,8 @@ async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
     if 'windshield' in data and 'key' in data and 'mark_windshield' in data and 'odometer' in data \
             and 'transport_inside' in data and 'transport_outside' in data and 'vin_number' in data \
             and 'wheel' in data:
+        del data['current_keyboard']
+        await commands.add_vehicle_request(user_id, list(data.values()))
         await callback.message.edit_text(text=lexicon['end_inspection'], reply_markup=keyboard)
         await state.clear()
     elif len(data) < 2:

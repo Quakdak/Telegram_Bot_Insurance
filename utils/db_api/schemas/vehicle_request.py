@@ -8,5 +8,6 @@ class VehicleRequest(TimedBaseModel):
     id = Column(Integer, Sequence('vehicle_request_id_seq'), primary_key=True)
     user_id = Column(BigInteger, ForeignKey('users.user_id'), nullable=False)
     data = Column(MutableList.as_mutable(ARRAY(String)))
+    status = Column(String, nullable=False, default='pending')
 
     query: sql.select
