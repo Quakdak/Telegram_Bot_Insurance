@@ -7,7 +7,7 @@ import quick_commands as commands
 
 async def db_test():
     await db.set_bind(bot_config.POSTGRES_URI)
-    # await db.gino.drop_all()  # удаление всех данных
+    await db.gino.drop_all()  # удаление всех данных
     await db.gino.create_all()
 
     await commands.add_user(user_id=1, first_name='AAA', last_name='DDD', is_admin=False)

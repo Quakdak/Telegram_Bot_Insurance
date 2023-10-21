@@ -1,10 +1,10 @@
 from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
 
-from config.bot_config import bot
 from handlers.user_panel.state_request.state_request_house import request_house
 from lexicon.lexicon_ru import lexicon
-import requests
+
+from utils.check_photo import check_photo
 
 from utils.get_photo import get_photo
 
@@ -18,23 +18,31 @@ async def getting_defect(message: Message, state: FSMContext):
     data = await state.get_data()
     photo_id = message.photo[-1].file_id
     file_url = await get_photo(photo_id)
-    if 'defect' in data:
-        data['defect'].append(photo_id)
+    check_result = await check_photo(file_url)
+    if check_result:
+
+        if 'defect' in data:
+            data['defect'].append(photo_id)
+        else:
+            data['defect'] = [photo_id]
+        button_1 = InlineKeyboardButton(
+            text='Добавить еще',
+            callback_data="add_more_defect"
+        )
+        button_2 = InlineKeyboardButton(
+            text='Закончить',
+            callback_data='end_add_defect'
+        )
+        kb = [[button_1], [button_2]]
+        keyboard = InlineKeyboardMarkup(
+            inline_keyboard=kb
+        )
+        await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
     else:
-        data['defect'] = [photo_id]
-    button_1 = InlineKeyboardButton(
-        text='Добавить еще',
-        callback_data="add_more_defect"
-    )
-    button_2 = InlineKeyboardButton(
-        text='Закончить',
-        callback_data='end_add_defect'
-    )
-    kb = [[button_1], [button_2]]
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=kb
-    )
-    await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
+        button = InlineKeyboardButton(text='Отправить еще раз', callback_data="add_more_defect")
+        kb = [[button]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=kb)
+        await message.answer(text=check_result, reply_markup=keyboard)
 
 
 async def got_defect(callback: CallbackQuery, state: FSMContext):
