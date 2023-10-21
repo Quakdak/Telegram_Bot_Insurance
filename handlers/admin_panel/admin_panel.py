@@ -20,4 +20,4 @@ async def admin(callback: CallbackQuery):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
-    await callback.message.edit_text(text='Админ-панель', reply_markup=keyboard)
+    await callback.message.edit_text(text=lexicon['admin'], reply_markup=keyboard)
