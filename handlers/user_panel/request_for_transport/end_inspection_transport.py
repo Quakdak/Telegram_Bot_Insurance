@@ -1,5 +1,3 @@
-import os
-from dotenv import load_dotenv
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
