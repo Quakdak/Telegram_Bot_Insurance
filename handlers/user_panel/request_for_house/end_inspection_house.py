@@ -28,7 +28,7 @@ async def end_inspection_house(callback: CallbackQuery, state: FSMContext):
     if user_id in admin_ids:
         button4 = InlineKeyboardButton(
             text='Админ панель',
-            callback_data='Admin'
+            callback_data='admin'
         )
         inline_kb.append([button4])
     keyboard = InlineKeyboardMarkup(
