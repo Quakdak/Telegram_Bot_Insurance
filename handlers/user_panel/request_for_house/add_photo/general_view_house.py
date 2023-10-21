@@ -2,6 +2,7 @@ from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKe
 from aiogram.fsm.context import FSMContext
 from handlers.user_panel.state_request.state_request_house import request_house
 from lexicon.lexicon_ru import lexicon
+from utils.get_photo import get_photo
 
 
 async def general_view_house(callback: CallbackQuery, state: FSMContext):
@@ -11,6 +12,8 @@ async def general_view_house(callback: CallbackQuery, state: FSMContext):
 
 async def getting_general_view_house(message: Message, state: FSMContext):
     data = await state.get_data()
+    photo_id = message.photo[-1].file_id
+    file_url = await get_photo(photo_id)
     if 'general_view_house' in data:
         data['general_view_house'].append(message.photo[-1].file_id)
     else:

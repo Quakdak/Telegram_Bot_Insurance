@@ -1,7 +1,12 @@
 from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
+
+from config.bot_config import bot
 from handlers.user_panel.state_request.state_request_house import request_house
 from lexicon.lexicon_ru import lexicon
+import requests
+
+from utils.get_photo import get_photo
 
 
 async def defect(callback: CallbackQuery, state: FSMContext):
@@ -11,10 +16,12 @@ async def defect(callback: CallbackQuery, state: FSMContext):
 
 async def getting_defect(message: Message, state: FSMContext):
     data = await state.get_data()
+    photo_id = message.photo[-1].file_id
+    file_url = await get_photo(photo_id)
     if 'defect' in data:
-        data['defect'].append(message.photo[-1].file_id)
+        data['defect'].append(photo_id)
     else:
-        data['defect'] = [message.photo[-1].file_id]
+        data['defect'] = [photo_id]
     button_1 = InlineKeyboardButton(
         text='Добавить еще',
         callback_data="add_more_defect"

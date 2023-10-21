@@ -2,6 +2,7 @@ from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKe
 from aiogram.fsm.context import FSMContext
 from handlers.user_panel.state_request.state_request_house import request_house
 from lexicon.lexicon_ru import lexicon
+from utils.get_photo import get_photo
 
 
 async def window(callback: CallbackQuery, state: FSMContext):
@@ -11,6 +12,8 @@ async def window(callback: CallbackQuery, state: FSMContext):
 
 async def getting_window(message: Message, state: FSMContext):
     data = await state.get_data()
+    photo_id = message.photo[-1].file_id
+    file_url = await get_photo(photo_id)
     if 'window' in data:
         data['window'].append(message.photo[-1].file_id)
     else:

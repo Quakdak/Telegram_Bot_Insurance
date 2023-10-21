@@ -2,6 +2,7 @@ from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKe
 from aiogram.fsm.context import FSMContext
 from handlers.user_panel.state_request.state_request_transport import request_transport
 from lexicon.lexicon_ru import lexicon
+from utils.get_photo import get_photo
 
 
 async def transport_outside(callback: CallbackQuery, state: FSMContext):
@@ -11,6 +12,8 @@ async def transport_outside(callback: CallbackQuery, state: FSMContext):
 
 async def getting_transport_outside(message: Message, state: FSMContext):
     data = await state.get_data()
+    photo_id = message.photo[-1].file_id
+    file_url = await get_photo(photo_id)
     if 'transport_outside' in data:
         data['transport_outside'].append(message.photo[-1].file_id)
     else:
