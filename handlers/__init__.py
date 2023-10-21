@@ -7,6 +7,8 @@ from handlers.user_panel.state_request.state_request_transport import request_tr
 from handlers.start import start
 from handlers.done import done
 from handlers.user_panel.apply_request import apply_request
+from handlers.user_panel.active_requests import active_requests
+from handlers.user_panel.to_main import to_main
 from handlers.user_panel.request_for_transport.request_for_transport import request_for_transport
 from handlers.user_panel.request_for_transport.start_inspection_transport import start_inspection_transport
 from handlers.user_panel.request_for_transport.reference_photo_transport import reference_photo_transport
@@ -46,6 +48,8 @@ from handlers.user_panel.request_for_house.end_inspection_house import end_inspe
 def register_user_commands(router: Router):
     router.message.register(start, CommandStart())
     router.callback_query.register(apply_request, F.data == 'apply_request')
+    router.callback_query.register(active_requests, F.data == 'active_requests')
+    router.callback_query.register(to_main, F.data == 'to_main')
     router.callback_query.register(done, F.data == 'done')
 
     router.callback_query.register(request_for_transport, F.data == 'request_for_transport')

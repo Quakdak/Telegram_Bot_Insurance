@@ -1,20 +1,12 @@
-import os
-
-from aiogram.types import Message
+from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
-from lexicon.lexicon_ru import lexicon
 import utils.db_api.quick_commands as commands
 
 
-async def start(message: Message):
-    user_name = message.from_user.first_name
-    user_id = message.from_user.id
-
+async def to_main(callback: CallbackQuery):
+    user_id = callback.message.from_user.id
     user = await commands.select_user(user_id)
-    if not user:
-        await commands.add_user(user_id=user_id, first_name=message.from_user.first_name,
-                                last_name=message.from_user.last_name, is_admin=False)
-        user = await commands.select_user(user_id)
+    print(user)
 
     button_1 = InlineKeyboardButton(
         text='Подать заявку',
@@ -22,7 +14,7 @@ async def start(message: Message):
     )
     button_2 = InlineKeyboardButton(
         text='Активные заявки',
-        callback_data='active_requests'
+        callback_data='avtive_requests'
     )
     button_3 = InlineKeyboardButton(
         text='Принятые заявки',
@@ -35,9 +27,7 @@ async def start(message: Message):
             callback_data='Admin'
         )
         inline_kb.append([button4])
-
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
-    await message.answer(lexicon["start"].format(user_name),
-                         reply_markup=keyboard)
+    await callback.message.edit_text(text='Вы вернулись в главное меню', reply_markup=keyboard)
