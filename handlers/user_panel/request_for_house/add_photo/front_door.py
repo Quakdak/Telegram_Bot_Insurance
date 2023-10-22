@@ -13,15 +13,15 @@ async def front_door(callback: CallbackQuery, state: FSMContext):
 
 async def getting_front_door(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'front_door' in data:
-            data['front_door'].append(message.photo[-1].file_id)
+            data['front_door'].append(message.document.file_id)
         else:
-            data['front_door'] = [message.photo[-1].file_id]
+            data['front_door'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_front_door"

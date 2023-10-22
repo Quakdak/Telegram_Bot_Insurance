@@ -13,14 +13,14 @@ async def transport_outside(callback: CallbackQuery, state: FSMContext):
 
 async def getting_transport_outside(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'transport_outside' in data:
-            data['transport_outside'].append(message.photo[-1].file_id)
+            data['transport_outside'].append(message.document.file_id)
         else:
-            data['transport_outside'] = [message.photo[-1].file_id]
+            data['transport_outside'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_transport_outside"

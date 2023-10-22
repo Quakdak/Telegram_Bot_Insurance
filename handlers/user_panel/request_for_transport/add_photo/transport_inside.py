@@ -13,14 +13,14 @@ async def transport_inside(callback: CallbackQuery, state: FSMContext):
 
 async def getting_transport_inside(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'transport_inside' in data:
-            data['transport_inside'].append(message.photo[-1].file_id)
+            data['transport_inside'].append(message.document.file_id)
         else:
-            data['transport_inside'] = [message.photo[-1].file_id]
+            data['transport_inside'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_transport_inside"

@@ -13,14 +13,14 @@ async def odometer(callback: CallbackQuery, state: FSMContext):
 
 async def getting_odometer(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'odometer' in data:
-            data['odometer'].append(message.photo[-1].file_id)
+            data['odometer'].append(message.document.file_id)
         else:
-            data['odometer'] = [message.photo[-1].file_id]
+            data['odometer'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_odometer"
