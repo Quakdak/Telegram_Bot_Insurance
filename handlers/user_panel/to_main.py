@@ -1,12 +1,13 @@
+from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 import utils.db_api.quick_commands as commands
 
 
-async def to_main(callback: CallbackQuery):
-    user_id = callback.message.from_user.id
+async def to_main(callback: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    user_id = data['user_id']
     user = await commands.select_user(user_id)
-    print(user)
 
     button_1 = InlineKeyboardButton(
         text='Подать заявку',

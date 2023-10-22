@@ -1,18 +1,18 @@
-import os
-
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from lexicon.lexicon_ru import lexicon
 import utils.db_api.quick_commands as commands
 
 
-async def start(message: Message):
+async def start(message: Message, state: FSMContext):
     user_name = message.from_user.first_name
     user_id = message.from_user.id
+    await state.update_data(user_id=user_id)
 
     user = await commands.select_user(user_id)
     if not user:
-        await commands.add_user(user_id=user_id, first_name=message.from_user.first_name,
+        await commands.add_user(user_id=user_id, first_name=user_name,
                                 last_name=message.from_user.last_name, is_admin=False)
         user = await commands.select_user(user_id)
 

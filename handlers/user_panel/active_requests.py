@@ -1,11 +1,13 @@
+from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from utils.db_api.schemas.house_request import HouseRequest
 from utils.db_api.schemas.vehicle_request import VehicleRequest
 
 
-async def active_requests(callback: CallbackQuery):
-    user_id = callback.message.from_user.id
+async def active_requests(callback: CallbackQuery,state: FSMContext):
+    data = await state.get_data()
+    user_id = data['user_id']
     requests_for_transport = await VehicleRequest.query.where(
         VehicleRequest.user_id == user_id and VehicleRequest.status != 'finished').gino.all()
 

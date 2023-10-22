@@ -7,7 +7,7 @@ import utils.db_api.quick_commands as commands
 
 async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    user_id = callback.message.from_user.id
+    user_id = data['user_id']
     user = await commands.select_user(user_id)
 
     button_1 = InlineKeyboardButton(
@@ -36,10 +36,12 @@ async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
             and 'transport_inside' in data and 'transport_outside' in data and 'vin_number' in data \
             and 'wheel' in data:
         del data['current_keyboard']
+        user_id = data['user_id']
         await commands.add_vehicle_request(user_id, list(data.values()))
+        data = dict(user_id=user_id)
         await callback.message.edit_text(text=lexicon['end_inspection'], reply_markup=keyboard)
-        await state.clear()
-    elif len(data) < 2:
+        await state.set_data(data)
+    elif len(data) < 3:
         await callback.message.edit_text(text=lexicon['early_end_inspection'], reply_markup=keyboard)
     else:
         keyboard = InlineKeyboardMarkup(
