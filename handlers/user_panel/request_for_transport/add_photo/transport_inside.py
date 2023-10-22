@@ -1,10 +1,11 @@
 from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
-from handlers.user_panel.state_request.state_request_transport import request_transport
+from handlers.user_panel.states.state_request_transport import request_transport
 from lexicon.lexicon_ru import lexicon
 from utils.check_photo import check_photo
 from utils.get_photo import get_photo
 
+min_counter_photo = 0
 
 async def transport_inside(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=lexicon['transport_inside'])
@@ -35,6 +36,8 @@ async def getting_transport_inside(message: Message, state: FSMContext):
         )
         await state.set_data(data)
         await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
+        global min_counter_photo
+        min_counter_photo += 1
     else:
         button = InlineKeyboardButton(text='Отправить еще раз', callback_data="add_more_transport_inside")
         kb = [[button]]
@@ -43,6 +46,7 @@ async def getting_transport_inside(message: Message, state: FSMContext):
 
 async def got_transport_inside(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
+
 
     button = InlineKeyboardButton(
         text='✅Фото салона',
@@ -58,3 +62,4 @@ async def got_transport_inside(callback: CallbackQuery, state: FSMContext):
     await state.update_data(current_keyboard=data['current_keyboard'])
     await callback.message.edit_text(text=lexicon['got_photo'], reply_markup=keyboard)
     await state.set_state(state=None)
+

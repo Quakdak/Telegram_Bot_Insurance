@@ -37,16 +37,13 @@ async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
             and 'transport_inside' in data and 'transport_outside' in data and 'vin_number' in data \
             and 'wheel' in data:
         user_id = data['user_id']
-<<<<<<< HEAD
         del data['current_keyboard']
         del data['user_id']
         await commands.add_vehicle_request(user_id, **data)
         data = dict(user_id=user_id, current_keyboard=inline_kb)
-=======
         print(user_id)
         await commands.add_vehicle_request(user_id, list(data.values()))
         data = dict(user_id=user_id)
->>>>>>> d9e311273ab2324f89795e4066986b1ae8b58167
         await callback.message.edit_text(text=lexicon['end_inspection'], reply_markup=keyboard)
         await state.set_data(data)
     elif len(data) < 3:

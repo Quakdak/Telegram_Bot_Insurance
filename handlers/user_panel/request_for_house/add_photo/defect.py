@@ -1,7 +1,7 @@
 from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
 
-from handlers.user_panel.state_request.state_request_house import request_house
+from handlers.user_panel.states.state_request_house import request_house
 from lexicon.lexicon_ru import lexicon
 
 from utils.check_photo import check_photo
