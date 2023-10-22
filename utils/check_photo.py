@@ -20,7 +20,7 @@ def has_noise(image, threshold=10):
 
 
 async def check_photo(photo_url: str):
-    response = get(photo_url)
+    """response = get(photo_url)
     pil_image = Image.open(BytesIO(response.content))
 
     exif_data = pil_image.getexif()
@@ -43,7 +43,7 @@ async def check_photo(photo_url: str):
     blurry = is_blurry(img)
     noisy = has_noise(img)
     if blurry or noisy:
-        return 'Фотография размыта или содержит шумы'
+        return 'Фотография размыта или содержит шумы'"""
 
     return True
 # check_photo("https://api.telegram.org/file/bot6664800041:AAH-YTC9r44vRbrQkLZzNk90rQWqRIpLCIo/photos/file_0.jpg")
