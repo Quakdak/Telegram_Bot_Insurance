@@ -34,6 +34,7 @@ async def getting_front_door(message: Message, state: FSMContext):
         keyboard = InlineKeyboardMarkup(
             inline_keyboard=kb
         )
+        await state.set_data(data)
         await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
     else:
         button = InlineKeyboardButton(text='Отправить еще раз', callback_data="add_more_front_door")

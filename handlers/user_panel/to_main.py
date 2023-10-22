@@ -15,11 +15,11 @@ async def to_main(callback: CallbackQuery, state: FSMContext):
     )
     button_2 = InlineKeyboardButton(
         text='Активные заявки',
-        callback_data='avtive_requests'
+        callback_data='active_requests'
     )
     button_3 = InlineKeyboardButton(
         text='Принятые заявки',
-        callback_data='applied_history'
+        callback_data='applied_requests'
     )
     inline_kb = [[button_1], [button_2], [button_3]]
     if user.is_admin:
@@ -31,4 +31,6 @@ async def to_main(callback: CallbackQuery, state: FSMContext):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
+    data['current_keyboard'] = inline_kb
+    await state.update_data(current_keyboard=data['current_keyboard'])
     await callback.message.edit_text(text='Вы вернулись в главное меню', reply_markup=keyboard)
