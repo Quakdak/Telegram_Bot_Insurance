@@ -2,6 +2,14 @@ __all__ = ['start', 'register_user_commands']
 
 from aiogram import Router, F
 from aiogram.filters import CommandStart
+
+from handlers.admin_panel.back_to_admin_panel import back_to_admin_panel
+from handlers.admin_panel.admin_panel import admin_panel
+from handlers.admin_panel.see_house_request.see_house_requests import see_house_requests, process_house_request_press
+from handlers.admin_panel.see_house_request.hr_callback_factory import HrCallbackFactory
+from handlers.admin_panel.see_vehicle_request.see_vehicle_requests import see_vehicle_requests, \
+    process_vehicle_request_press
+from handlers.admin_panel.see_vehicle_request.vr_callback_factory import VrCallbackFactory
 from handlers.user_panel.state_request.state_request_transport import request_transport
 
 from handlers.start import start
@@ -59,6 +67,13 @@ def register_user_commands(router: Router):
     router.message.register(error, ~F.document)
     router.callback_query.register(to_main, F.data == 'to_main')
     router.callback_query.register(done, F.data == 'done')
+
+    router.callback_query.register(admin_panel, F.data == 'admin_panel')
+    router.callback_query.register(see_house_requests, F.data == 'see_house_requests')
+    router.callback_query.register(process_house_request_press, HrCallbackFactory.filter())
+    router.callback_query.register(see_vehicle_requests, F.data == 'see_vehicle_requests')
+    router.callback_query.register(process_vehicle_request_press, VrCallbackFactory.filter())
+    router.callback_query.register(back_to_admin_panel, F.data == 'back_to_admin_panel')
 
     router.callback_query.register(request_for_transport, F.data == 'request_for_transport')
     router.callback_query.register(start_inspection_transport, F.data == 'start_inspection_transport')

@@ -5,7 +5,7 @@ from utils.db_api.schemas.house_request import HouseRequest
 from utils.db_api.schemas.vehicle_request import VehicleRequest
 
 
-async def active_requests(callback: CallbackQuery,state: FSMContext):
+async def active_requests(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     user_id = data['user_id']
 
