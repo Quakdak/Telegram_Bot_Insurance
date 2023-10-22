@@ -13,14 +13,14 @@ async def damage(callback: CallbackQuery, state: FSMContext):
 
 async def getting_damage(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'damage' in data:
-            data['damage'].append(message.photo[-1].file_id)
+            data['damage'].append(message.document.file_id)
         else:
-            data['damage'] = [message.photo[-1].file_id]
+            data['damage'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_damage"

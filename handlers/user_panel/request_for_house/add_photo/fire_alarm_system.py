@@ -13,14 +13,14 @@ async def fire_alarm_system(callback: CallbackQuery, state: FSMContext):
 
 async def getting_fire_alarm_system(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'fire_alarm_system' in data:
-            data['fire_alarm_system'].append(message.photo[-1].file_id)
+            data['fire_alarm_system'].append(message.document.file_id)
         else:
-            data['fire_alarm_system'] = [message.photo[-1].file_id]
+            data['fire_alarm_system'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_fire_alarm_system"

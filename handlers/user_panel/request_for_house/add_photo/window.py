@@ -13,14 +13,14 @@ async def window(callback: CallbackQuery, state: FSMContext):
 
 async def getting_window(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'window' in data:
-            data['window'].append(message.photo[-1].file_id)
+            data['window'].append(message.document.file_id)
         else:
-            data['window'] = [message.photo[-1].file_id]
+            data['window'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_window"

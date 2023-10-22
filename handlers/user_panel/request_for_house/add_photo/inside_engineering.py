@@ -13,14 +13,14 @@ async def inside_engineering(callback: CallbackQuery, state: FSMContext):
 
 async def getting_inside_engineering(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'inside_engineering' in data:
-            data['inside_engineering'].append(message.photo[-1].file_id)
+            data['inside_engineering'].append(message.document.file_id)
         else:
-            data['inside_engineering'] = [message.photo[-1].file_id]
+            data['inside_engineering'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_inside_engineering"

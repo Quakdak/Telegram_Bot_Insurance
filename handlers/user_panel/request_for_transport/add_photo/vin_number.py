@@ -1,5 +1,3 @@
-from typing import List
-
 from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
 from handlers.user_panel.state_request.state_request_transport import request_transport
@@ -15,14 +13,14 @@ async def vin_number(callback: CallbackQuery, state: FSMContext):
 
 async def getting_vin_number(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'vin_number' in data:
-            data['vin_number'].append(message.photo[-1].file_id)
+            data['vin_number'].append(message.document.file_id)
         else:
-            data['vin_number'] = [message.photo[-1].file_id]
+            data['vin_number'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_vin_number"

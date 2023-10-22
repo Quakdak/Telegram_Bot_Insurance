@@ -16,7 +16,7 @@ async def defect(callback: CallbackQuery, state: FSMContext):
 
 async def getting_defect(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:

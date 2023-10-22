@@ -13,14 +13,14 @@ async def wheel(callback: CallbackQuery, state: FSMContext):
 
 async def getting_wheel(message: Message, state: FSMContext):
     data = await state.get_data()
-    photo_id = message.photo[-1].file_id
+    photo_id = message.document.file_id
     file_url = await get_photo(photo_id)
     check_result = await check_photo(file_url)
     if check_result is True:
         if 'wheel' in data:
-            data['wheel'].append(message.photo[-1].file_id)
+            data['wheel'].append(message.document.file_id)
         else:
-            data['wheel'] = [message.photo[-1].file_id]
+            data['wheel'] = [message.document.file_id]
         button_1 = InlineKeyboardButton(
             text='Добавить еще',
             callback_data="add_more_wheel"
