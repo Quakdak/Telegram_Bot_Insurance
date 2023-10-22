@@ -16,11 +16,11 @@ async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
     )
     button_2 = InlineKeyboardButton(
         text='Активные заявки',
-        callback_data='avtive_requests'
+        callback_data='active_requests'
     )
     button_3 = InlineKeyboardButton(
         text='Принятые заявки',
-        callback_data='applied_history'
+        callback_data='applied_requests'
     )
     inline_kb = [[button_1], [button_2], [button_3]]
     if user.is_admin:
@@ -35,10 +35,11 @@ async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
     if 'windshield' in data and 'key' in data and 'mark_windshield' in data and 'odometer' in data \
             and 'transport_inside' in data and 'transport_outside' in data and 'vin_number' in data \
             and 'wheel' in data:
-        del data['current_keyboard']
         user_id = data['user_id']
-        await commands.add_vehicle_request(user_id, list(data.values()))
-        data = dict(user_id=user_id)
+        del data['current_keyboard']
+        del data['user_id']
+        await commands.add_vehicle_request(user_id, **data)
+        data = dict(user_id=user_id, current_keyboard=inline_kb)
         await callback.message.edit_text(text=lexicon['end_inspection'], reply_markup=keyboard)
         await state.set_data(data)
     elif len(data) < 3:

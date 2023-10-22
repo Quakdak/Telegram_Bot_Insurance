@@ -11,17 +11,15 @@ def get_exif(image):
 
 
 def is_blurry(image, threshold=100):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    fm = cv2.Laplacian(gray, cv2.CV_64F).var()
+    fm = cv2.Laplacian(image, cv2.CV_64F).var()
     return fm < threshold
 
 
 def has_noise(image, threshold=10):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    diff = cv2.absdiff(gray, blurred)
-    stddev = diff.std()
-    return stddev > threshold
+    denoised_image = cv2.fastNlMeansDenoising(image, None, 10, 7, 21)
+    diff = cv2.absdiff(image, denoised_image)
+    mean_diff = diff.mean()
+    return mean_diff > threshold
 
 
 async def check_photo(photo_url: str):
@@ -38,22 +36,12 @@ async def check_photo(photo_url: str):
 
     width, height = pil_image.size
 
-    # Проверяем разрешение
-    if width >= 1600 and height >= 1200:
-        pass
-    else:
+    if width < 1600 or height < 1200:
         return "Фотография не соответствует разрешению"
 
+    '''image_array = np.frombuffer(response.content, np.uint8)
+    image = cv2.imdecode(image_array, cv2.IMREAD_GRAYSCALE)'''
+
     return True
-""" image = np.array(bytearray(response.content), dtype=np.uint8)
-
- img = cv2.imdecode(image, cv2.IMREAD_COLOR)
-
- blurry = is_blurry(img)
- noisy = has_noise(img)
- if blurry or noisy:
-     return 'Фотография размыта или содержит шумы'"""
-
-
 # check_photo("https://api.telegram.org/file/bot6664800041:AAH-YTC9r44vRbrQkLZzNk90rQWqRIpLCIo/photos/file_0.jpg")
 # check_photo("https://www.imgonline.com.ua/result_img/imgonline-com-ua-Blur-mglUmgw7PCsuiNM.jpg")

@@ -33,6 +33,7 @@ async def getting_fire_alarm_system(message: Message, state: FSMContext):
         keyboard = InlineKeyboardMarkup(
             inline_keyboard=kb
         )
+        await state.set_data(data)
         await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
     else:
         button = InlineKeyboardButton(text='Отправить еще раз', callback_data="add_more_fire_alarm_system")

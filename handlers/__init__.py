@@ -8,10 +8,15 @@ from handlers.start import start
 from handlers.done import done
 from handlers.user_panel.apply_request import apply_request
 from handlers.user_panel.active_requests import active_requests
+from handlers.user_panel.applied_requests import applied_requests
+from handlers.user_panel.error_photo import error_photo
+from handlers.user_panel.error import error
 from handlers.user_panel.to_main import to_main
+
 from handlers.user_panel.request_for_transport.request_for_transport import request_for_transport
 from handlers.user_panel.request_for_transport.start_inspection_transport import start_inspection_transport
 from handlers.user_panel.request_for_transport.reference_photo_transport import reference_photo_transport
+
 from handlers.user_panel.request_for_house.request_for_house import request_for_house
 from handlers.user_panel.request_for_house.start_inspection_house import start_inspection_house
 from handlers.user_panel.request_for_house.reference_photo_house import reference_photo_house
@@ -49,6 +54,9 @@ def register_user_commands(router: Router):
     router.message.register(start, CommandStart())
     router.callback_query.register(apply_request, F.data == 'apply_request')
     router.callback_query.register(active_requests, F.data == 'active_requests')
+    router.message.register(applied_requests, F.data == 'applied_requests')
+    router.message.register(error_photo, F.photo)
+    router.message.register(error, ~F.document)
     router.callback_query.register(to_main, F.data == 'to_main')
     router.callback_query.register(done, F.data == 'done')
 

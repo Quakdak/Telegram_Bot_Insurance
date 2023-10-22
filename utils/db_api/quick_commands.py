@@ -30,18 +30,42 @@ async def select_user(user_id):
     return user
 
 
-async def add_vehicle_request(user_id: int, data: list):
+async def add_house_request(user_id: int, front_door: list, facades_buildings: list, fence: list,
+                            fire_alarm_system: list, general_view_house: list, household_property: list,
+                            inside_engineering: list, interior: list, mechanical_protection: list,
+                            outside_engineering: list, security_alarm_system: list, window: list, defect: list):
     try:
-        vehicle_request = VehicleRequest(user_id=user_id, data=data)
-        await vehicle_request.create()
+        house_request = HouseRequest(user_id=user_id, defect=defect,
+                                     facades_buildings=facades_buildings,
+                                     fence=fence,
+                                     fire_alarm_system=fire_alarm_system,
+                                     front_door=front_door,
+                                     general_view_house=general_view_house,
+                                     household_property=household_property,
+                                     inside_engineering=inside_engineering,
+                                     interior=interior,
+                                     mechanical_protection=mechanical_protection,
+                                     outside_engineering=outside_engineering,
+                                     security_alarm_system=security_alarm_system,
+                                     window=window)
+        await house_request.create()
     except UniqueViolationError:
         print('Заявка на транспорт не добавлена')
 
 
-async def add_house_request(user_id: int, data: list):
+async def add_vehicle_request(user_id: int, key: list, mark_windshield: list, odometer: list, transport_inside: list,
+                              transport_outside: list, vin_number: list, wheel: list, windshield: list, damage: list):
     try:
-        house_request = HouseRequest(user_id=user_id, data=data)
-        await house_request.create()
+        vehicle_request = VehicleRequest(user_id=user_id, damage=damage,
+                                         key=key,
+                                         mark_windshield=mark_windshield,
+                                         odometer=odometer,
+                                         transport_outside=transport_outside,
+                                         transport_inside=transport_inside,
+                                         vin_number=vin_number,
+                                         wheel=wheel,
+                                         windshield=windshield)
+        await vehicle_request.create()
     except UniqueViolationError:
         print('Заявка на дом не добавлена')
 

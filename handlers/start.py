@@ -26,7 +26,7 @@ async def start(message: Message, state: FSMContext):
     )
     button_3 = InlineKeyboardButton(
         text='Принятые заявки',
-        callback_data='applied_history'
+        callback_data='applied_requests'
     )
     inline_kb = [[button_1], [button_2], [button_3]]
     if user.is_admin:
@@ -39,5 +39,6 @@ async def start(message: Message, state: FSMContext):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
+    await state.update_data(current_keyboard=inline_kb)
     await message.answer(lexicon["start"].format(user_name),
                          reply_markup=keyboard)

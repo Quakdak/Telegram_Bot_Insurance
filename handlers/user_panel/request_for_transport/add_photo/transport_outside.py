@@ -33,6 +33,7 @@ async def getting_transport_outside(message: Message, state: FSMContext):
         keyboard = InlineKeyboardMarkup(
             inline_keyboard=kb
         )
+        await state.set_data(data)
         await message.answer(text=lexicon['add_more'], reply_markup=keyboard)
     else:
         button = InlineKeyboardButton(text='Отправить еще раз', callback_data="add_more_transport_outside")
