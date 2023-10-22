@@ -27,6 +27,6 @@ async def see_vehicle_requests(callback: CallbackQuery):
 
 async def process_vehicle_request_press(callback: CallbackQuery,
                                         callback_data: VrCallbackFactory):
-    """await callback.message.answer(text=callback_data.pack())
-    await callback.answer()"""
-    pass
+    data = callback_data.pack().split(':')
+    vehicle_request_id = data[-1]
+    vehicle_request = await commands.select_vehicle_request(vehicle_request_id)

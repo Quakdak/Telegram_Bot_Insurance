@@ -29,6 +29,8 @@ async def see_house_requests(callback: CallbackQuery):
 
 async def process_house_request_press(callback: CallbackQuery,
                                       callback_data: HrCallbackFactory):
-    """await callback.message.answer(text=callback_data.pack())
-    await callback.answer()"""
-    pass
+    data = callback_data.pack().split(':')
+    house_request_id = data[-1]
+    house_request = await commands.select_house_request(house_request_id)
+
+

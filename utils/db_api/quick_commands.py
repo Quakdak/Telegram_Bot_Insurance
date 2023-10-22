@@ -54,3 +54,13 @@ async def select_all_house_requests():
 async def select_all_vehicle_requests():
     vehicle_requests = await VehicleRequest.query.gino.all()
     return vehicle_requests
+
+
+async def select_house_request(house_request_id):
+    user = await User.query.where(HouseRequest.id == house_request_id).gino.first()
+    return user
+
+
+async def select_vehicle_request(vehicle_request_id):
+    user = await User.query.where(VehicleRequest.id == vehicle_request_id).gino.first()
+    return user
