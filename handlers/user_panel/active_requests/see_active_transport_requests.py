@@ -17,7 +17,7 @@ async def see_active_transport_requests(callback: CallbackQuery, state: FSMConte
 
     if requests_for_vehicle:
         callback_data_and_text = [
-            [VrActiveCallbackFactory(request_id=request.id), f'Заявка {request.id}'] for request in
+            [VrActiveCallbackFactory(VR_request_id=request.id), f'Заявка {request.id}'] for request in
             requests_for_vehicle]
         builder = InlineKeyboardBuilder()
         for callback_data, number in callback_data_and_text:

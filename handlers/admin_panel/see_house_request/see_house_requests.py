@@ -19,6 +19,7 @@ async def see_house_requests(callback: CallbackQuery):
         builder = InlineKeyboardBuilder()
         builder.adjust(3)
         for callback_data, text in callback_data_and_text:
+            print(callback_data)
             builder.button(text=text, callback_data=callback_data)
         builder.row(InlineKeyboardButton(text='Назад', callback_data='back_to_admin_panel'))
 
@@ -54,17 +55,17 @@ async def process_house_request_press(callback: CallbackQuery,
         process_key('window'): house_request.window,
         process_key('defect'): house_request.defect,
         process_key('household_property'): house_request.household_property,
-        process_key('fence'): house_request.fence,
-        process_key('end_inspection_house'): house_request.end_inspection_house
+        process_key('fence'): house_request.fence
     }
 
     for text, photo_ids in photos_dict.items():
-        await callback.message.answer(text=text)
-        photo_group = []
-        for photo_id in photo_ids:
-            # await callback.message.answer_document(document=photo_id)
-            photo_group.append(InputMediaDocument(media=photo_id))
-        await callback.message.answer_media_group(photo_group)
+        if photo_ids:
+            await callback.message.answer(text=text)
+            photo_group = []
+            for photo_id in photo_ids:
+                # await callback.message.answer_document(document=photo_id)
+                photo_group.append(InputMediaDocument(media=photo_id))
+            await callback.message.answer_media_group(photo_group)
 
     button_1 = InlineKeyboardButton(
         text='Принять заявку ✅',

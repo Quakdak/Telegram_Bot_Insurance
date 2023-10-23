@@ -53,12 +53,13 @@ async def process_vehicle_request_press(callback: CallbackQuery,
     }
 
     for text, photo_ids in photos_dict.items():
-        await callback.message.answer(text=text)
-        photo_group = []
-        for photo_id in photo_ids:
-            # await callback.message.answer_document(document=photo_id)
-            photo_group.append(InputMediaDocument(media=photo_id))
-        await callback.message.answer_media_group(photo_group)
+        if photo_ids:
+            await callback.message.answer(text=text)
+            photo_group = []
+            for photo_id in photo_ids:
+                # await callback.message.answer_document(document=photo_id)
+                photo_group.append(InputMediaDocument(media=photo_id))
+            await callback.message.answer_media_group(photo_group)
 
     button_1 = InlineKeyboardButton(
         text='Принять заявку ✅',

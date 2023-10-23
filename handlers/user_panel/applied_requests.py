@@ -20,7 +20,7 @@ async def applied_requests(callback: CallbackQuery, state: FSMContext):
     output = ''
     if all_requests:
         for request in all_requests:
-            output += f'ID заявки: {request.id} Статус заявки: Принята'
+            output += f'ID заявки: {request.id} Статус заявки: Принята\n'
     else:
         output = 'Нет принятых заявок'
     button = InlineKeyboardButton(

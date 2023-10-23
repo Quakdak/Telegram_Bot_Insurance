@@ -54,8 +54,7 @@ async def write_comment_to_vehicle_request(message: Message, state: FSMContext):
     await state.clear()
     await state.update_data(user_id=user_id)
 
-async def decline_vehicle_request(callback: CallbackQuery,
-                                  state: FSMContext):
+async def decline_vehicle_request(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     vehicle_request_id = data['vehicle_request_id']
     vehicle_request = await commands.select_vehicle_request(vehicle_request_id)

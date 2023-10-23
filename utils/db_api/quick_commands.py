@@ -33,7 +33,7 @@ async def select_user(user_id):
 async def add_house_request(user_id: int, front_door: list, facades_buildings: list, fence: list,
                             fire_alarm_system: list, general_view_house: list, household_property: list,
                             inside_engineering: list, interior: list, mechanical_protection: list,
-                            outside_engineering: list, security_alarm_system: list, window: list, defect: list):
+                            outside_engineering: list, security_alarm_system: list, window: list, defect: list = []):
     try:
         house_request = HouseRequest(user_id=user_id, defect=defect,
                                      facades_buildings=facades_buildings,
@@ -54,7 +54,8 @@ async def add_house_request(user_id: int, front_door: list, facades_buildings: l
 
 
 async def add_vehicle_request(user_id: int, key: list, mark_windshield: list, odometer: list, transport_inside: list,
-                              transport_outside: list, vin_number: list, wheel: list, windshield: list, damage: list):
+                              transport_outside: list, vin_number: list, wheel: list, windshield: list,
+                              damage: list = []):
     try:
         vehicle_request = VehicleRequest(user_id=user_id, damage=damage,
                                          key=key,
