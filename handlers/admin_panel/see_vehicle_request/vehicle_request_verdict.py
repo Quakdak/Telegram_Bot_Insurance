@@ -1,6 +1,8 @@
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
+from config.bot_config import bot
+from ..states.vehicle_request_review import FSMVehicleRequestReview
 import utils.db_api.quick_commands as commands
 
 
@@ -20,27 +22,37 @@ async def accept_vehicle_request(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text='Назад', reply_markup=keyboard)
 
 
-async def return_house_request(callback: CallbackQuery,
-                               state: FSMContext):
+async def begin_return_vehicle_request(callback: CallbackQuery,
+                                       state: FSMContext):
+    await callback.message.edit_text(text='Введите сообшение пользователю: ')
+    await state.set_state(FSMVehicleRequestReview.write_message_to_user)
+
+
+async def write_comment_to_vehicle_request(message: Message, state: FSMContext):
     data = await state.get_data()
+
     vehicle_request_id = data['vehicle_request_id']
     vehicle_request = await commands.select_vehicle_request(vehicle_request_id)
-    await state.clear()
-    await callback.message.edit_text(text='Ведите сообшение пользователю: ')
-    
+    user_id = vehicle_request.user_id
+
+    msg = message.text
+    text = f'Ваша заявка на транспорт №{vehicle_request_id}\nБыла отправлена вам на доработку\n' \
+           f'Сообщение администратора:{msg}'
+    await bot.send_message(chat_id=user_id, text=text)
+
     await vehicle_request.update(status='returned').apply()
-    await callback.answer(text='Заявка успешно отправлена обратно')
     button = InlineKeyboardButton(
         text='Назад',
         callback_data='back_to_admin_panel'
     )
     inline_kb = [[button]]
     keyboard = InlineKeyboardMarkup(inline_keyboard=inline_kb)
-    await callback.message.edit_text(text='Назад', reply_markup=keyboard)
+    await message.answer(text='Заявка успешно отправлена на доработку', reply_markup=keyboard)
+    await state.clear()
 
 
-async def decline_house_request(callback: CallbackQuery,
-                                state: FSMContext):
+async def decline_vehicle_request(callback: CallbackQuery,
+                                  state: FSMContext):
     data = await state.get_data()
     vehicle_request_id = data['vehicle_request_id']
     vehicle_request = await commands.select_vehicle_request(vehicle_request_id)

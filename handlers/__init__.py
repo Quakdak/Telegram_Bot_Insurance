@@ -10,8 +10,9 @@ from handlers.admin_panel.see_house_request.hr_callback_factory import HrCallbac
 from handlers.admin_panel.see_vehicle_request.see_vehicle_requests import see_vehicle_requests, \
     process_vehicle_request_press
 from handlers.admin_panel.see_vehicle_request.vehicle_request_verdict import accept_vehicle_request, \
-    return_house_request, decline_house_request
+    begin_return_vehicle_request, decline_vehicle_request, write_comment_to_vehicle_request, end_return_vehicle_request
 from handlers.admin_panel.see_vehicle_request.vr_callback_factory import VrCallbackFactory
+from handlers.admin_panel.states.vehicle_request_review import FSMVehicleRequestReview
 from handlers.user_panel.states.state_request_transport import request_transport
 
 from handlers.start import start
@@ -71,8 +72,6 @@ def register_user_commands(router: Router):
     router.callback_query.register(see_active_transport_requests, F.data == 'see_active_transport_requests')
     router.callback_query.register(see_active_house_requests, F.data == 'see_active_house_requests')
     router.callback_query.register(applied_requests, F.data == 'applied_requests')
-    router.message.register(error_photo, F.photo)
-    router.message.register(error, ~F.document)
     router.callback_query.register(to_main, F.data == 'to_main')
     router.callback_query.register(done, F.data == 'done')
 
@@ -80,8 +79,12 @@ def register_user_commands(router: Router):
     router.callback_query.register(see_house_requests, F.data == 'see_house_requests')
     router.callback_query.register(process_house_request_press, HrCallbackFactory.filter())
     router.callback_query.register(accept_vehicle_request, F.data == 'accept_vehicle_request')
-    router.callback_query.register(return_house_request, F.data == 'return_house_request')
-    router.callback_query.register(decline_house_request, F.data == 'decline_house_request')
+    router.callback_query.register(decline_vehicle_request, F.data == 'decline_vehicle_request')
+
+    router.callback_query.register(begin_return_vehicle_request, F.data == 'return_vehicle_request')
+    router.message.register(write_comment_to_vehicle_request, F.text, FSMVehicleRequestReview.write_message_to_user)
+    # router.callback_query.register(end_return_vehicle_request, F.data == 'end_return_vehicle_request')
+
     router.callback_query.register(see_vehicle_requests, F.data == 'see_vehicle_requests')
     router.callback_query.register(process_vehicle_request_press, VrCallbackFactory.filter())
     router.callback_query.register(back_to_admin_panel, F.data == 'back_to_admin_panel')
@@ -210,3 +213,6 @@ def register_user_commands(router: Router):
     router.callback_query.register(fence, F.data == 'add_more_fence')
     router.message.register(getting_fence, F.document, request_house.wait_fence)
     router.callback_query.register(got_fence, F.data == 'end_add_fence')
+
+    router.message.register(error_photo, F.photo)
+    router.message.register(error, ~F.document)
