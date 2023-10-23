@@ -87,6 +87,12 @@ async def select_all_pending_vehicle_requests():
     return vehicle_requests
 
 
+async def select_all_pending_house_requests():
+    house_requests = await HouseRequest.query.where(
+        HouseRequest.status == 'pending').gino.all()
+    return house_requests
+
+
 async def select_house_request(house_request_id):
     house_request = await HouseRequest.query.where(HouseRequest.id == house_request_id).gino.first()
     return house_request

@@ -10,7 +10,7 @@ async def accept_vehicle_request(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     vehicle_request_id = data['vehicle_request_id']
     vehicle_request = await commands.select_vehicle_request(vehicle_request_id)
-    user_id = data['user_id']
+    user_id = vehicle_request.user_id
     await state.clear()
     await state.update_data(user_id=user_id)
     await vehicle_request.update(status='accepted').apply()
@@ -36,10 +36,13 @@ async def write_comment_to_vehicle_request(message: Message, state: FSMContext):
     vehicle_request_id = data['vehicle_request_id']
     vehicle_request = await commands.select_vehicle_request(vehicle_request_id)
     user_id = vehicle_request.user_id
-
+    await state.clear()
+    await state.update_data(user_id=user_id)
     msg = message.text
-    text = f'Ваша заявка на транспорт №{vehicle_request_id}\nБыла отправлена вам на доработку\n' \
-           f'Сообщение администратора:{msg}'
+    text = f'Ваша заявка на осмотр транспорта №{vehicle_request_id} не прошла проверку администратора\n' \
+           f'Попробуйте еще раз\n' \
+           f'Сообщение администратора: \n' \
+           f'{msg}'
     await bot.send_message(chat_id=user_id, text=text)
 
     await vehicle_request.update(status='returned').apply()
@@ -49,12 +52,14 @@ async def write_comment_to_vehicle_request(message: Message, state: FSMContext):
     )
     inline_kb = [[button]]
     keyboard = InlineKeyboardMarkup(inline_keyboard=inline_kb)
+
     await message.answer(text='Заявка успешно отправлена на доработку', reply_markup=keyboard)
     user_id = data['user_id']
     await state.clear()
     await state.update_data(user_id=user_id)
 
-async def decline_vehicle_request(callback: CallbackQuery, state: FSMContext):
+
+async def decline_vehicle_request(message: Message, callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     vehicle_request_id = data['vehicle_request_id']
     vehicle_request = await commands.select_vehicle_request(vehicle_request_id)
@@ -70,3 +75,4 @@ async def decline_vehicle_request(callback: CallbackQuery, state: FSMContext):
     inline_kb = [[button]]
     keyboard = InlineKeyboardMarkup(inline_keyboard=inline_kb)
     await callback.message.edit_text(text='Вернуться в панель администратора', reply_markup=keyboard)
+    await message.answer(text='Заявка успешно отправлена на доработку', reply_markup=keyboard)

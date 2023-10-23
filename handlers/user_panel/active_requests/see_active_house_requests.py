@@ -15,7 +15,8 @@ async def see_active_house_requests(callback: CallbackQuery, state: FSMContext):
 
     if requests_for_house:
         callback_data_and_text = [
-            [HrActiveCallbackFactory(HR_request_id=request.id), f'Заявка {request.id}'] for request in requests_for_house]
+            [HrActiveCallbackFactory(HR_request_id=request.id), f'Заявка {request.id}'] for request in
+            requests_for_house]
         builder = InlineKeyboardBuilder()
         for callback_data, number in callback_data_and_text:
             builder.button(text=f'{number}', callback_data=callback_data)
@@ -35,8 +36,8 @@ async def see_active_house_requests(callback: CallbackQuery, state: FSMContext):
         await callback.message.edit_text(text='Нет активных заявок', reply_markup=keyboard)
 
 
-async def process_house_active_request_press(callback: CallbackQuery, callback_data: HrActiveCallbackFactory,
-                                      state: FSMContext):
+async def process_active_house_request_press(callback: CallbackQuery, callback_data: HrActiveCallbackFactory,
+                                             state: FSMContext):
     data = callback_data.pack().split(':')
     house_request_id = data[-1]
     print(callback_data)
