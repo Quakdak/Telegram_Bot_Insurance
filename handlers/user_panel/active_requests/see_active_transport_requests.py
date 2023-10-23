@@ -1,8 +1,11 @@
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton, InlineKeyboardBuilder
+
+from lexicon.lexicon_ru import lexicon
 from utils.db_api.schemas.vehicle_request import VehicleRequest
-from handlers.admin_panel.see_vehicle_request.vr_callback_factory import VrCallbackFactory
+from handlers.user_panel.active_requests.callback_data_class import VrActiveCallbackFactory
+import utils.db_api.quick_commands as commands
 
 
 async def see_active_transport_requests(callback: CallbackQuery, state: FSMContext):
@@ -12,16 +15,13 @@ async def see_active_transport_requests(callback: CallbackQuery, state: FSMConte
     requests_for_vehicle = await VehicleRequest.query.where(
         VehicleRequest.user_id == user_id).where(VehicleRequest.status != 'accepted').gino.all()
 
-    statuses = dict(pending='На рассмотрении',
-                    returned='Требует изменений')
-
     if requests_for_vehicle:
         callback_data_and_text = [
-            [VrCallbackFactory(vehicle_request_id=request.id), f'Заявка {request.id}',
-             f'Статус {statuses[request.status.rstrip()]}'] for request in requests_for_vehicle]
+            [VrActiveCallbackFactory(request_id=request.id), f'Заявка {request.id}'] for request in
+            requests_for_vehicle]
         builder = InlineKeyboardBuilder()
-        for callback_data, number, status in callback_data_and_text:
-            builder.button(text=f'{number} {status}', callback_data=callback_data)
+        for callback_data, number in callback_data_and_text:
+            builder.button(text=f'{number}', callback_data=callback_data)
         builder.row(InlineKeyboardButton(text='В главное меню', callback_data='to_main'))
         data['current_keyboard'] = builder
         await state.update_data(current_keyboard=data['current_keyboard'])
@@ -39,11 +39,30 @@ async def see_active_transport_requests(callback: CallbackQuery, state: FSMConte
         await callback.message.edit_text(text='Нет активных заявок', reply_markup=keyboard)
 
 
-"""async def process_house_request_press(callback: CallbackQuery, callback_data: HrCallbackFactory):
+async def process_transport_request_press(callback: CallbackQuery, callback_data: VrActiveCallbackFactory,
+                                          state: FSMContext):
     data = callback_data.pack().split(':')
-    house_request_id = data[0]
+    transport_request_id = data[-1]
 
-    requests_for_house = await HouseRequest.query.where(
-        HouseRequest.id == house_request_id).where(HouseRequest.status != 'accepted').gino.all()
+    request = await commands.select_vehicle_request(int(transport_request_id))
 
-    output = f'Сообщение от страховщика:\n{}'"""
+    if request.status == 'pending':
+        button = InlineKeyboardButton(
+            text="В главное меню",
+            callback_data='to_main'
+        )
+        keyboard = InlineKeyboardMarkup(
+            inline_keyboard=[[button]]
+        )
+        await state.update_data(current_keyboard=[[button]])
+        await callback.message.edit_text(text='Ваша заявка на рассмотрении', reply_markup=keyboard)
+    else:
+        button = InlineKeyboardButton(
+            text="В главное меню",
+            callback_data='to_main'
+        )
+        keyboard = InlineKeyboardMarkup(
+            inline_keyboard=[[button]]
+        )
+        await state.update_data(current_keyboard=[[button]])
+        await callback.message.edit_text(text='Ваше заявление отпрвлено на доработку', reply_markup=keyboard)
