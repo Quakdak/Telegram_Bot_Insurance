@@ -31,8 +31,9 @@ async def check_photo(photo_url: str):
         pil_image = Image.open(BytesIO(response.content))
 
     exif = get_exif(pil_image)
-    if not exif or 1 not in exif or 2 not in exif or 3 not in exif or 4 not in exif or 31 not in exif:
-        return 'В фото отсутствуют дата, время или геолокация'''
+    print(exif)
+    if not exif or 1 not in exif or 2 not in exif or 3 not in exif or 4 not in exif or 29 not in exif:
+        return 'В фото отсутствуют дата, время или геолокация. Возможно у вас выключены геометки/дата/время в настройках камеры/галереи'
 
     width, height = pil_image.size
 
