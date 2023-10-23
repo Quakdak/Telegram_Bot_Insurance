@@ -10,10 +10,10 @@ async def applied_requests(callback: CallbackQuery, state: FSMContext):
     user_id = data['user_id']
 
     requests_for_transport = await VehicleRequest.query.where(
-        VehicleRequest.user_id == user_id and VehicleRequest.status == 'finished').gino.all()
+        VehicleRequest.user_id == user_id).where(VehicleRequest.status == 'accepted').gino.all()
 
     requests_for_house = await HouseRequest.query.where(
-        HouseRequest.user_id == user_id and HouseRequest.status == 'finished').gino.all()
+        HouseRequest.user_id == user_id).where(HouseRequest.status == 'accepted').gino.all()
 
     all_requests = requests_for_house + requests_for_transport
 

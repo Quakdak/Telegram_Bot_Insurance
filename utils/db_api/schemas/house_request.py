@@ -19,6 +19,7 @@ class HouseRequest(TimedBaseModel):
     outside_engineering = Column(ARRAY(String), nullable=False)
     security_alarm_system = Column(ARRAY(String), nullable=False)
     window = Column(ARRAY(String), nullable=False)
+    for_edit=Column(ARRAY(String))
     status = Column(String, nullable=False, default='pending')
 
     query: sql.select
