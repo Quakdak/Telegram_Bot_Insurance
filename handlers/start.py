@@ -1,18 +1,20 @@
-import os
-
-from aiogram.types import Message, CallbackQuery
-from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
-from dotenv import load_dotenv
+from aiogram.types import Message
+from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from lexicon.lexicon_ru import lexicon
+import utils.db_api.quick_commands as commands
 
 
 async def start(message: Message, state: FSMContext):
-    data = await state.get_data()
     user_name = message.from_user.first_name
     user_id = message.from_user.id
-    load_dotenv()
-    admin_ids = map(int, os.getenv('ADMIN_IDS').split())
+    await state.update_data(user_id=user_id)
+    user = await commands.select_user(user_id)
+    if not user:
+        await commands.add_user(user_id=user_id, first_name=user_name,
+                                last_name=message.from_user.last_name, username=message.from_user.username,
+                                is_admin=False)
+        user = await commands.select_user(user_id)
 
     button_1 = InlineKeyboardButton(
         text='Подать заявку',
@@ -24,18 +26,19 @@ async def start(message: Message, state: FSMContext):
     )
     button_3 = InlineKeyboardButton(
         text='Принятые заявки',
-        callback_data='applied_history'
+        callback_data='applied_requests'
     )
     inline_kb = [[button_1], [button_2], [button_3]]
-    if user_id in admin_ids:
+    if user.is_admin:
         button4 = InlineKeyboardButton(
             text='Админ панель',
-            callback_data='admin'
+            callback_data='admin_panel'
         )
         inline_kb.append([button4])
+
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb
     )
-
+    await state.update_data(current_keyboard=inline_kb)
     await message.answer(lexicon["start"].format(user_name),
                          reply_markup=keyboard)

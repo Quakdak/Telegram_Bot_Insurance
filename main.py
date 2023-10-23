@@ -1,20 +1,30 @@
 import asyncio
 
-from config.bot_config import dp, bot
-from handlers import register_user_commands
 from aiogram.types import BotCommand
 
-bot_commands = (
-    ("start", "Начало работы с ботом"),
-)
+from config.bot_config import dp, bot
+from handlers import register_user_commands
+from utils.db_api.db_gino import on_startup, db
 
 
 async def main():
+    # подключение к бд
+    await on_startup(dp)
+
+    # удаление данных
+    # await db.gino.drop_all()
+
+    # создание таблиц
+    # await db.gino.create()
+
+    bot_commands = (
+        ("start", "Начало работы с ботом"),
+    )
+
     commands_for_bot = []
     for cmd in bot_commands:
         commands_for_bot.append(BotCommand(command=cmd[0], description=cmd[1]))
     await bot.set_my_commands(commands=commands_for_bot)
-
     register_user_commands(dp)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)

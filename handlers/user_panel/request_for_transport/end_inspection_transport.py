@@ -3,6 +3,7 @@ from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.context import FSMContext
 from lexicon.lexicon_ru import lexicon
 import utils.db_api.quick_commands as commands
+from utils.db_api.schemas.vehicle_request import VehicleRequest
 
 
 async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
@@ -40,10 +41,11 @@ async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
         del data['current_keyboard']
         del data['user_id']
         await commands.add_vehicle_request(user_id, **data)
+        request = await VehicleRequest.query.order_by(VehicleRequest.id.desc()).gino.first()
         data = dict(user_id=user_id, current_keyboard=inline_kb)
-        await callback.message.edit_text(text=lexicon['end_inspection'], reply_markup=keyboard)
+        await callback.message.edit_text(text=lexicon['end_inspection'].format(request.id), reply_markup=keyboard)
         await state.set_data(data)
-    elif len(data) < 3:
+    elif len(data) < 4:
         await callback.message.edit_text(text=lexicon['early_end_inspection'], reply_markup=keyboard)
     else:
         keyboard = InlineKeyboardMarkup(
