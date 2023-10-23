@@ -10,7 +10,7 @@ from handlers.admin_panel.see_house_request.hr_callback_factory import HrCallbac
 from handlers.admin_panel.see_vehicle_request.see_vehicle_requests import see_vehicle_requests, \
     process_vehicle_request_press
 from handlers.admin_panel.see_vehicle_request.vehicle_request_verdict import accept_vehicle_request, \
-    begin_return_vehicle_request, decline_vehicle_request, write_comment_to_vehicle_request, end_return_vehicle_request
+    begin_return_vehicle_request, decline_vehicle_request, write_comment_to_vehicle_request
 from handlers.admin_panel.see_vehicle_request.vr_callback_factory import VrCallbackFactory
 from handlers.admin_panel.states.vehicle_request_review import FSMVehicleRequestReview
 from handlers.user_panel.states.state_request_transport import request_transport
