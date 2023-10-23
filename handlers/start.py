@@ -9,7 +9,6 @@ async def start(message: Message, state: FSMContext):
     user_name = message.from_user.first_name
     user_id = message.from_user.id
     await state.update_data(user_id=user_id)
-
     user = await commands.select_user(user_id)
     if not user:
         await commands.add_user(user_id=user_id, first_name=user_name,

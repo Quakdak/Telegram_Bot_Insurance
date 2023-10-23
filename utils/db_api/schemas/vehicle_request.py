@@ -15,7 +15,6 @@ class VehicleRequest(TimedBaseModel):
     vin_number = Column(ARRAY(String), nullable=False)
     wheel = Column(ARRAY(String), nullable=False)
     windshield = Column(ARRAY(String), nullable=False)
-    for_edit = Column(ARRAY(String))
     status = Column(String, nullable=False, default='pending')
 
     query: sql.select
