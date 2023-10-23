@@ -68,11 +68,8 @@ async def process_vehicle_request_press(callback: CallbackQuery,
         text='Отправить на редактирование ➡️',
         callback_data='return_vehicle_request'
     )
-    button_3 = InlineKeyboardButton(
-        text='Отменить заявку ❌',
-        callback_data='decline_vehicle_request'
-    )
-    inline_kb = [[button_1], [button_2], [button_3]]
+
+    inline_kb = [[button_1], [button_2]]
 
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb

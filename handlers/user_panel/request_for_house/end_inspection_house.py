@@ -41,7 +41,7 @@ async def end_inspection_house(callback: CallbackQuery, state: FSMContext):
         del data['current_keyboard']
         del data['user_id']
         await commands.add_house_request(user_id, **data)
-        request = await HouseRequest.query.where(HouseRequest.user_id == user_id).gino.last()
+        request = await HouseRequest.query.where(HouseRequest.user_id == user_id).gino.all()[-1]
         data = dict(user_id=user_id, current_keyboard=inline_kb)
         await callback.message.edit_text(text=lexicon['end_inspection'].format(request.id), reply_markup=keyboard)
         await state.set_data(data)
