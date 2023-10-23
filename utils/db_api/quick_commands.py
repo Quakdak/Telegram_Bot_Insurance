@@ -80,11 +80,17 @@ async def select_all_vehicle_requests():
     return vehicle_requests
 
 
+async def select_all_pending_vehicle_requests():
+    vehicle_requests = await VehicleRequest.query.where(
+        VehicleRequest.status == 'pending').gino.all()
+    return vehicle_requests
+
+
 async def select_house_request(house_request_id):
-    user = await User.query.where(HouseRequest.id == house_request_id).gino.first()
-    return user
+    house_request = await HouseRequest.query.where(HouseRequest.id == house_request_id).gino.first()
+    return house_request
 
 
 async def select_vehicle_request(vehicle_request_id):
-    user = await User.query.where(VehicleRequest.id == vehicle_request_id).gino.first()
-    return user
+    vehicle_request = await VehicleRequest.query.where(VehicleRequest.id == vehicle_request_id).gino.first()
+    return vehicle_request

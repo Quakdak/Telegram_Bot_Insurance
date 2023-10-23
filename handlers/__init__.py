@@ -9,6 +9,8 @@ from handlers.admin_panel.see_house_request.see_house_requests import see_house_
 from handlers.admin_panel.see_house_request.hr_callback_factory import HrCallbackFactory
 from handlers.admin_panel.see_vehicle_request.see_vehicle_requests import see_vehicle_requests, \
     process_vehicle_request_press
+from handlers.admin_panel.see_vehicle_request.vehicle_request_verdict import accept_vehicle_request, \
+    return_house_request, decline_house_request
 from handlers.admin_panel.see_vehicle_request.vr_callback_factory import VrCallbackFactory
 from handlers.user_panel.states.state_request_transport import request_transport
 
@@ -71,6 +73,9 @@ def register_user_commands(router: Router):
     router.callback_query.register(admin_panel, F.data == 'admin_panel')
     router.callback_query.register(see_house_requests, F.data == 'see_house_requests')
     router.callback_query.register(process_house_request_press, HrCallbackFactory.filter())
+    router.callback_query.register(accept_vehicle_request, F.data == 'accept_vehicle_request')
+    router.callback_query.register(return_house_request, F.data == 'return_house_request')
+    router.callback_query.register(decline_house_request, F.data == 'decline_house_request')
     router.callback_query.register(see_vehicle_requests, F.data == 'see_vehicle_requests')
     router.callback_query.register(process_vehicle_request_press, VrCallbackFactory.filter())
     router.callback_query.register(back_to_admin_panel, F.data == 'back_to_admin_panel')
