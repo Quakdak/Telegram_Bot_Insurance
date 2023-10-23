@@ -75,8 +75,6 @@ def register_user_commands(router: Router):
     router.callback_query.register(see_active_house_requests, F.data == 'see_active_house_requests')
     router.callback_query.register(process_house_request_press, HrActiveCallbackFactory.filter())
     router.callback_query.register(applied_requests, F.data == 'applied_requests')
-    router.message.register(error_photo, F.photo)
-    router.message.register(error, ~F.document)
     router.callback_query.register(to_main, F.data == 'to_main')
     router.callback_query.register(done, F.data == 'done')
 
@@ -214,3 +212,6 @@ def register_user_commands(router: Router):
     router.callback_query.register(fence, F.data == 'add_more_fence')
     router.message.register(getting_fence, F.document, request_house.wait_fence)
     router.callback_query.register(got_fence, F.data == 'end_add_fence')
+
+    router.message.register(error_photo, F.photo)
+    router.message.register(error, ~F.document)
