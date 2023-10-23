@@ -7,9 +7,9 @@ from utils.db_api.schemas.vehicle_request import VehicleRequest
 from utils.db_api.schemas.house_request import HouseRequest
 
 
-async def add_user(user_id: int, first_name: str, last_name: str, is_admin: bool):
+async def add_user(user_id: int, first_name: str, last_name: str, username: str, is_admin: bool):
     try:
-        user = User(user_id=user_id, first_name=first_name, last_name=last_name, is_admin=is_admin)
+        user = User(user_id=user_id, first_name=first_name, last_name=last_name, username=username, is_admin=is_admin)
         await user.create()
     except UniqueViolationError:
         print('Пользователь не добавлен')
