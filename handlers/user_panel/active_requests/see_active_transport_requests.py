@@ -65,4 +65,7 @@ async def process_transport_request_press(callback: CallbackQuery, callback_data
             inline_keyboard=[[button]]
         )
         await state.update_data(current_keyboard=[[button]])
-        await callback.message.edit_text(text='Ваше заявление отпрвлено на доработку', reply_markup=keyboard)
+        await callback.message.edit_text(
+            text='Ваше заявление {} было отправлено на доработку, заполните новое заявление, следуя комментарию страховщика'.format(
+                request.id), reply_markup=keyboard)
+        await request.delete()

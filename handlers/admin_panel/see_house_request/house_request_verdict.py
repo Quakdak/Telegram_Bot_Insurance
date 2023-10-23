@@ -10,7 +10,9 @@ async def accept_house_request(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     house_request_id = data['house_request_id']
     house_request = await commands.select_house_request(house_request_id)
+    user_id = data['user_id']
     await state.clear()
+    await state.update_data(user_id=user_id)
     await house_request.update(status='accepted').apply()
     await callback.answer(text='Заявка успешно принята')
     button = InlineKeyboardButton(
@@ -34,7 +36,8 @@ async def write_comment_to_house_request(message: Message, state: FSMContext):
     house_request_id = data['house_request_id']
     house_request = await commands.select_house_request(house_request_id)
     user_id = house_request.user_id
-
+    await state.clear()
+    await state.update_data(user_id=user_id)
     msg = message.text
     text = f'Ваша заявка на осмотр дома №{house_request_id} не прошла проверку администратора\n' \
            f'Попробуйте еще раз\n' \
@@ -50,7 +53,3 @@ async def write_comment_to_house_request(message: Message, state: FSMContext):
     inline_kb = [[button]]
     keyboard = InlineKeyboardMarkup(inline_keyboard=inline_kb)
     await message.answer(text='Заявка успешно отправлена на доработку', reply_markup=keyboard)
-    await state.clear()
-
-
-

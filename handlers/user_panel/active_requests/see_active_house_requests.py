@@ -35,7 +35,8 @@ async def see_active_house_requests(callback: CallbackQuery, state: FSMContext):
         await callback.message.edit_text(text='Нет активных заявок', reply_markup=keyboard)
 
 
-async def process_house_request_press(callback: CallbackQuery, callback_data: HrActiveCallbackFactory, state: FSMContext):
+async def process_house_request_press(callback: CallbackQuery, callback_data: HrActiveCallbackFactory,
+                                      state: FSMContext):
     data = callback_data.pack().split(':')
     house_request_id = data[-1]
 
@@ -60,5 +61,7 @@ async def process_house_request_press(callback: CallbackQuery, callback_data: Hr
             inline_keyboard=[[button]]
         )
         await state.update_data(current_keyboard=[[button]])
-        await callback.message.edit_text(text='Ваше заявление отпрвлено на доработку', reply_markup=keyboard)
-
+        await callback.message.edit_text(
+            text='Ваше заявление {} было отправлено на доработку, заполните новое заявление, следуя комментарию страховщика'.format(
+                request.id), reply_markup=keyboard)
+        await request.delete()
