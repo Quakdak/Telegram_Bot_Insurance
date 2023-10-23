@@ -8,7 +8,9 @@ async def accept_house_request(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     house_request_id = data['house_request_id']
     house_request = await commands.select_vehicle_request(house_request_id)
+    user_id = data['user_id']
     await state.clear()
+    await state.update_data(user_id=user_id)
     await house_request.update(status='accepted').apply()
     await callback.answer(text='Заявка успешно принята')
     button = InlineKeyboardButton(
@@ -25,7 +27,9 @@ async def return_house_request(callback: CallbackQuery,
     data = await state.get_data()
     house_request_id = data['house_request_id']
     house_request = await commands.select_vehicle_request(house_request_id)
+    user_id = data['user_id']
     await state.clear()
+    await state.update_data(user_id=user_id)
     await callback.message.edit_text(text='Ведите сообшение пользователю: ')
 
     await house_request.update(status='returned').apply()
@@ -44,7 +48,9 @@ async def decline_house_request(callback: CallbackQuery,
     data = await state.get_data()
     house_request_id = data['house_request_id']
     house_request = await commands.select_vehicle_request(house_request_id)
+    user_id = data['user_id']
     await state.clear()
+    await state.update_data(user_id=user_id)
     await house_request.update(status='declined').apply()
     await callback.answer(text='Заявка успешно отклонена')
     button = InlineKeyboardButton(

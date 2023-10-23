@@ -10,7 +10,9 @@ async def accept_vehicle_request(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     vehicle_request_id = data['vehicle_request_id']
     vehicle_request = await commands.select_vehicle_request(vehicle_request_id)
+    user_id = data['user_id']
     await state.clear()
+    await state.update_data(user_id=user_id)
     await vehicle_request.update(status='accepted').apply()
     await callback.answer(text='Заявка успешно принята')
     button = InlineKeyboardButton(
@@ -48,15 +50,18 @@ async def write_comment_to_vehicle_request(message: Message, state: FSMContext):
     inline_kb = [[button]]
     keyboard = InlineKeyboardMarkup(inline_keyboard=inline_kb)
     await message.answer(text='Заявка успешно отправлена на доработку', reply_markup=keyboard)
+    user_id = data['user_id']
     await state.clear()
-
+    await state.update_data(user_id=user_id)
 
 async def decline_vehicle_request(callback: CallbackQuery,
                                   state: FSMContext):
     data = await state.get_data()
     vehicle_request_id = data['vehicle_request_id']
     vehicle_request = await commands.select_vehicle_request(vehicle_request_id)
+    user_id = data['user_id']
     await state.clear()
+    await state.update_data(user_id=user_id)
     await vehicle_request.update(status='declined').apply()
     await callback.answer(text='Заявка успешно отклонена')
     button = InlineKeyboardButton(
