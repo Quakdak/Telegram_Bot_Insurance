@@ -41,6 +41,7 @@ async def getting_transport_outside(message: Message, state: FSMContext):
         keyboard = InlineKeyboardMarkup(inline_keyboard=kb)
         await message.answer(text=check_result, reply_markup=keyboard)
 
+
 async def got_transport_outside(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     button = InlineKeyboardButton(
