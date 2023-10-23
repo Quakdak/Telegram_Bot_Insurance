@@ -63,8 +63,7 @@ from handlers.user_panel.request_for_house.add_photo.fence import *
 from handlers.user_panel.request_for_house.end_inspection_house import end_inspection_house
 
 from handlers.user_panel.active_requests.active_requests import active_request
-from handlers.user_panel.active_requests.see_active_house_requests import see_active_house_requests, \
-    process_house_request_press
+from handlers.user_panel.active_requests.see_active_house_requests import see_active_house_requests, process_active_house_request_press
 from handlers.user_panel.active_requests.see_active_transport_requests import see_active_transport_requests, \
     process_transport_request_press
 from handlers.user_panel.active_requests.callback_data_class import HrActiveCallbackFactory, VrActiveCallbackFactory
@@ -77,7 +76,7 @@ def register_user_commands(router: Router):
     router.callback_query.register(see_active_transport_requests, F.data == 'see_active_transport_requests')
     router.callback_query.register(process_transport_request_press, VrActiveCallbackFactory.filter())
     router.callback_query.register(see_active_house_requests, F.data == 'see_active_house_requests')
-    router.callback_query.register(process_house_request_press, HrActiveCallbackFactory.filter())
+    router.callback_query.register(process_active_house_request_press, HrActiveCallbackFactory.filter())
     router.callback_query.register(applied_requests, F.data == 'applied_requests')
     router.callback_query.register(to_main, F.data == 'to_main')
     router.callback_query.register(done, F.data == 'done')

@@ -13,9 +13,9 @@ def process_key(key):
 
 
 async def see_house_requests(callback: CallbackQuery):
-    house_requests = (await commands.select_all_house_requests())[:100]
-    callback_data_and_text = [[HrCallbackFactory(house_request_id=i.id), f'Заявка {i.id}'] for i in house_requests]
+    house_requests = (await commands.select_all_pending_house_requests())[:100]
     if house_requests:
+        callback_data_and_text = [[HrCallbackFactory(house_request_id=i.id), f'Заявка {i.id}'] for i in house_requests]
         builder = InlineKeyboardBuilder()
         builder.adjust(3)
         for callback_data, text in callback_data_and_text:
@@ -38,8 +38,8 @@ async def process_house_request_press(callback: CallbackQuery,
                                       callback_data: HrCallbackFactory, state: FSMContext):
     data = callback_data.pack().split(':')
     house_request_id = int(data[-1])
-    await state.update_data(vehicle_request_id=house_request_id)
-    house_request = await commands.select_vehicle_request(house_request_id)
+    await state.update_data(house_request_id=house_request_id)
+    house_request = await commands.select_house_request(house_request_id)
 
     photos_dict = {
         process_key('general_view_house'): house_request.general_view_house,
@@ -55,7 +55,6 @@ async def process_house_request_press(callback: CallbackQuery,
         process_key('defect'): house_request.defect,
         process_key('household_property'): house_request.household_property,
         process_key('fence'): house_request.fence,
-        process_key('end_inspection_house'): house_request.end_inspection_house
     }
 
     for text, photo_ids in photos_dict.items():
@@ -68,7 +67,7 @@ async def process_house_request_press(callback: CallbackQuery,
 
     button_1 = InlineKeyboardButton(
         text='Принять заявку ✅',
-        callback_data='accept_vehicle_request'
+        callback_data='accept_house_request'
     )
     button_2 = InlineKeyboardButton(
         text='Отправить на редактирование ➡️',

@@ -41,7 +41,7 @@ async def end_inspection_transport(callback: CallbackQuery, state: FSMContext):
         del data['current_keyboard']
         del data['user_id']
         await commands.add_vehicle_request(user_id, **data)
-        request = await VehicleRequest.query.where(VehicleRequest.user_id == user_id).gino.last()
+        request = await VehicleRequest.query.order_by(VehicleRequest.id.desc()).gino.first()
         data = dict(user_id=user_id, current_keyboard=inline_kb)
         await callback.message.edit_text(text=lexicon['end_inspection'].format(request.id), reply_markup=keyboard)
         await state.set_data(data)

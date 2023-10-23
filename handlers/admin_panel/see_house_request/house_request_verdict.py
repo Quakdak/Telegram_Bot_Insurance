@@ -10,7 +10,7 @@ async def accept_house_request(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     house_request_id = data['house_request_id']
     house_request = await commands.select_house_request(house_request_id)
-    user_id = data['user_id']
+    user_id = house_request.user_id
     await state.clear()
     await state.update_data(user_id=user_id)
     await house_request.update(status='accepted').apply()

@@ -35,8 +35,8 @@ async def see_active_house_requests(callback: CallbackQuery, state: FSMContext):
         await callback.message.edit_text(text='Нет активных заявок', reply_markup=keyboard)
 
 
-async def process_house_request_press(callback: CallbackQuery, callback_data: HrActiveCallbackFactory,
-                                      state: FSMContext):
+async def process_active_house_request_press(callback: CallbackQuery, callback_data: HrActiveCallbackFactory,
+                                             state: FSMContext):
     data = callback_data.pack().split(':')
     house_request_id = data[-1]
 
