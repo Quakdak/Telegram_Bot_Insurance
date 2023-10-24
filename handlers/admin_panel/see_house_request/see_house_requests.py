@@ -42,6 +42,9 @@ async def process_house_request_press(callback: CallbackQuery,
     await state.update_data(house_request_id=house_request_id)
     house_request = await commands.select_house_request(house_request_id)
 
+    user_id = house_request.user_id
+    user = await commands.select_user(user_id)
+
     photos_dict = {
         process_key('general_view_house'): house_request.general_view_house,
         process_key('outside_engineering'): house_request.outside_engineering,
@@ -77,7 +80,12 @@ async def process_house_request_press(callback: CallbackQuery,
         callback_data='return_house_request'
     )
 
-    inline_kb = [[button_1], [button_2]]
+    button_3 = InlineKeyboardButton(
+        text='Связаться с клиентом ✉️',
+        url=f't.me/{user.username}'
+    )
+
+    inline_kb = [[button_1], [button_2], [button_3]]
 
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb

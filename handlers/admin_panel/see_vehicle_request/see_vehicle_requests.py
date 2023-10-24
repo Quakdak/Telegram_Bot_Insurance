@@ -40,6 +40,9 @@ async def process_vehicle_request_press(callback: CallbackQuery,
     await state.update_data(vehicle_request_id=vehicle_request_id)
     vehicle_request = await commands.select_vehicle_request(vehicle_request_id)
 
+    user_id = vehicle_request.user_id
+    user = await commands.select_user(user_id)
+
     photos_dict = {
         process_key('damage'): vehicle_request.damage,
         process_key('key'): vehicle_request.key,
@@ -70,7 +73,12 @@ async def process_vehicle_request_press(callback: CallbackQuery,
         callback_data='return_vehicle_request'
     )
 
-    inline_kb = [[button_1], [button_2]]
+    button_3 = InlineKeyboardButton(
+        text='Связаться с клиентом ✉️',
+        url=f't.me/{user.username}'
+    )
+
+    inline_kb = [[button_1], [button_2], [button_3]]
 
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=inline_kb

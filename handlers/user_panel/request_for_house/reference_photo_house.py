@@ -16,4 +16,4 @@ async def reference_photo_house(callback: CallbackQuery, state: FSMContext):
     )
     data['current_keyboard'] = inline_kb
     await state.update_data(current_keyboard=data['current_keyboard'])
-    await callback.message.edit_text(text=lexicon['reference_photo_house'],reply_markup=keyboard)
+    await callback.message.edit_text(text=lexicon['reference_photo_house'], reply_markup=keyboard)

@@ -8,6 +8,7 @@ class User(TimedBaseModel):
     user_id = Column(BigInteger, primary_key=True)
     first_name = Column(String(200), nullable=False)
     last_name = Column(String(200), nullable=True)
+    username = Column(String(200), nullable=True)
     is_admin = Column(Boolean, nullable=False)
 
     query: sql.select

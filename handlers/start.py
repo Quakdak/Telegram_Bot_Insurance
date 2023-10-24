@@ -12,7 +12,8 @@ async def start(message: Message, state: FSMContext):
     user = await commands.select_user(user_id)
     if not user:
         await commands.add_user(user_id=user_id, first_name=user_name,
-                                last_name=message.from_user.last_name, is_admin=False)
+                                last_name=message.from_user.last_name, username=message.from_user.username,
+                                is_admin=False)
         user = await commands.select_user(user_id)
 
     button_1 = InlineKeyboardButton(
