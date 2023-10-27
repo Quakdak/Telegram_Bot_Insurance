@@ -12,7 +12,7 @@ async def active_request(callback: CallbackQuery, state: FSMContext):
     )
     button_2 = InlineKeyboardButton(
         text='На загородный дом',
-        callback_data='see_active_transport_requests'
+        callback_data='see_active_house_requests'
     )
     inline_kb = [[button_1], [button_2]]
     keyboard = InlineKeyboardMarkup(
